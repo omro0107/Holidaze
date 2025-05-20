@@ -71,12 +71,14 @@ export const AuthProvider = ({ children }) => {
   // Login handler
   const login = useCallback(async (email, password) => {
     try {
+      console.log('Attempting login with API URL:', `${API_AUTH_URL}/login`);
       const response = await api.post(`${API_AUTH_URL}/login`, {
         email,
         password,
       });
 
-      const { accessToken, ...userData } = response.data;
+      console.log('Login response:', response);
+      const { accessToken, ...userData } = response;
       localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, accessToken);
       setToken(accessToken);
 

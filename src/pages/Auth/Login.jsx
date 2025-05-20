@@ -25,8 +25,10 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
+      console.log('Login attempt with:', { email: data.email });
       await login(data.email, data.password);
     } catch (err) {
+      console.error('Login error:', err);
       setError('submit', {
         type: 'manual',
         message: err.message || 'Failed to login',
