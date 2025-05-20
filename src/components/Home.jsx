@@ -55,7 +55,7 @@ const Home = () => {
         <div className="absolute inset-0">
           <img
             className="w-full h-full object-cover"
-            src="/src/assets/lobby.jpg"
+            src="/images/lobby.jpg"
             alt="Luxury hotel lobby"
           />
         </div>
@@ -120,7 +120,7 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-w-16 aspect-h-9 md:aspect-h-16">
               <img
-                src="/src/assets/tranquil.jpg"
+            src="/images/tranquil.jpg"
                 alt="Tranquil venue"
                 className="object-cover rounded-lg shadow-lg"
               />
