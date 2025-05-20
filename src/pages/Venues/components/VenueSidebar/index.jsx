@@ -191,32 +191,6 @@ const VenueSidebar = ({
           </p>
         )}
       </div>
-
-      {/* Host Info */}
-      {owner && (
-        <div className="border-t pt-6 mt-6">
-          <h3 className="text-lg font-semibold mb-4">
-            Hosted by {owner.name || 'Anonymous'}
-          </h3>
-          <div className="flex items-center">
-            {owner.avatar && (
-              <img
-                src={owner.avatar.url}
-                alt={owner.name || 'Host'}
-                className="h-12 w-12 rounded-full mr-4"
-              />
-            )}
-            <div>
-              {owner.email && (
-                <p className="text-gray-600">{owner.email}</p>
-              )}
-              {owner.bio && (
-                <p className="text-gray-500 mt-1 text-sm">{owner.bio}</p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
