@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuth } from '../../context/AuthContext';
@@ -12,11 +12,7 @@ import sunsetImage from '../../assets/sunset.jpg';
 
 const Login = () => {
   const { login } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
   const { loginSchema } = useFormValidation();
-
-  const from = location.state?.from?.pathname || '/';
 
   const {
     register,
@@ -30,7 +26,6 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       await login(data.email, data.password);
-      navigate(from, { replace: true });
     } catch (err) {
       setError('submit', {
         type: 'manual',

@@ -87,9 +87,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(completeUserData));
       setUser(completeUserData);
 
-      // Navigate to the previous page or home
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
+      // Navigate to home after successful login
+      navigate('/', { replace: true });
 
       return response;
     } catch (error) {
