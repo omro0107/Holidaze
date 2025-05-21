@@ -11,4 +11,5 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
   base: '/',
+  envPrefix: ['VITE_', 'NOROFF_']
 });
