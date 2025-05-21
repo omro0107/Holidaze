@@ -1,0 +1,3 @@
+window.ENV = {
+  VITE_NOROFF_API_KEY: '{{VITE_NOROFF_API_KEY}}'
+};
