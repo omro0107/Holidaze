@@ -20,16 +20,8 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    // Add API key to all requests
-    const apiKey = import.meta.env.VITE_API_KEY;
-    if (!apiKey) {
-      console.error('API Key is missing! Available env vars:', {
-        VITE_API_KEY: import.meta.env.VITE_API_KEY,
-        // Log other env vars without exposing sensitive data
-        envKeys: Object.keys(import.meta.env).filter(key => key.startsWith('VITE_'))
-      });
-    }
-    config.headers['X-Noroff-API-Key'] = apiKey;
+    // Add API key to all requests - using runtime config
+    config.headers['X-Noroff-API-Key'] = import.meta.env.NOROFF_API_KEY || '';
 
     // Add auth token if it exists
     const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
