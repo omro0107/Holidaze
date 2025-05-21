@@ -78,16 +78,24 @@ export const AuthProvider = ({ children }) => {
       });
 
       console.log('Login response:', response);
-      const { accessToken, ...userData } = response;
-      localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, accessToken);
-      setToken(accessToken);
-
-      // Fetch complete user profile after login
-      const profileResponse = await api.get(`${API_PROFILES_URL}/${userData.name}`);
-      const completeUserData = profileResponse.data;
+      const { accessToken, ...userData } = response.data;
       
-      localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(completeUserData));
-      setUser(completeUserData);
+      // First store the user data and token
+      localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, accessToken);
+      localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(userData));
+      setToken(accessToken);
+      setUser(userData);
+
+      // Then fetch complete profile data
+      try {
+        const profileResponse = await api.get(`${API_PROFILES_URL}/${userData.name}`);
+        const completeUserData = profileResponse.data;
+        localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(completeUserData));
+        setUser(completeUserData);
+      } catch (profileError) {
+        console.error('Failed to fetch complete profile:', profileError);
+        // Don't fail the login if profile fetch fails
+      }
 
       // Navigate to home after successful login
       navigate('/', { replace: true });
