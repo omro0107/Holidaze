@@ -1,4 +1,14 @@
-// Base API URL
+// API Configuration
+export const API_KEY = '140f2610-00d2-4340-ae4b-ae109ee190dc';
+
+export const API_CONFIG = {
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Noroff-API-Key': API_KEY
+  }
+};
+
+// Base URL
 export const API_URL = 'https://v2.api.noroff.dev';
 
 // Auth endpoints

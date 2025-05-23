@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import useApi from '../hooks/useApi';
-import { API_AUTH_URL, API_PROFILES_URL } from '../API/apiURL';
+import { API_AUTH_URL } from '../API/config';
 import { LOCAL_STORAGE_KEYS } from '../utils/constants';
+import { authService, profileService } from '../API';
 
 const AuthContext = createContext(null);
 
@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN));
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const api = useApi();
   const initializeAuthCalled = useRef(false);
 
   // Initialize auth state
@@ -44,10 +43,10 @@ export const AuthProvider = ({ children }) => {
           const storedUserData = JSON.parse(storedUser);
           
           // Fetch complete profile data
-          const response = await api.get(`${API_PROFILES_URL}/${storedUserData.name}`);
-          if (response.data) {
-            setUser(response.data);
-            localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(response.data));
+          const profileData = await profileService.getProfile(storedUserData.name);
+          if (profileData) {
+            setUser(profileData);
+            localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(profileData));
           } else if (!storedUser) {
             // If API returns generic profile and no stored user, logout
             logout();
@@ -72,13 +71,10 @@ export const AuthProvider = ({ children }) => {
   const login = useCallback(async (email, password) => {
     try {
       console.log('Attempting login with API URL:', `${API_AUTH_URL}/login`);
-      const response = await api.post(`${API_AUTH_URL}/login`, {
-        email,
-        password,
-      });
+      const response = await authService.login(email, password);
 
       console.log('Login response:', response);
-      const { accessToken, ...userData } = response.data;
+      const { accessToken, ...userData } = response;
       
       // First store the user data and token
       localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, accessToken);
@@ -88,8 +84,7 @@ export const AuthProvider = ({ children }) => {
 
       // Then fetch complete profile data
       try {
-        const profileResponse = await api.get(`${API_PROFILES_URL}/${userData.name}`);
-        const completeUserData = profileResponse.data;
+        const completeUserData = await profileService.getProfile(userData.name);
         localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(completeUserData));
         setUser(completeUserData);
       } catch (profileError) {
@@ -105,7 +100,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Login failed:', error);
       throw error;
     }
-  }, [api, navigate]);
+  }, [navigate]);
 
   // Register handler
   const register = useCallback(async (userData) => {
@@ -116,7 +111,7 @@ export const AuthProvider = ({ children }) => {
         venueManager: !!userData.venueManager // Convert to boolean
       };
 
-      const response = await api.post(`${API_AUTH_URL}/register`, registrationData);
+      const response = await authService.register(registrationData);
       
       // Auto-login after successful registration
       await login(userData.email, userData.password);
@@ -126,7 +121,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Registration failed:', error);
       throw error;
     }
-  }, [api, login]);
+  }, [login]);
 
   // Logout handler
   const logout = useCallback(() => {
@@ -140,8 +135,8 @@ export const AuthProvider = ({ children }) => {
   // Update profile handler
   const updateProfile = useCallback(async (profileData) => {
     try {
-      const response = await api.put(`${API_PROFILES_URL}/${user.name}`, profileData);
-      const updatedUser = { ...user, ...response.data[0] };
+      const response = await profileService.updateProfile(user.name, profileData);
+      const updatedUser = { ...user, ...response };
       setUser(updatedUser);
       localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(updatedUser));
       return response;
@@ -149,12 +144,12 @@ export const AuthProvider = ({ children }) => {
       console.error('Profile update failed:', error);
       throw error;
     }
-  }, [api, user]);
+  }, [user]);
 
   // Avatar update handler
   const updateAvatar = useCallback(async (avatarData) => {
     try {
-      const response = await api.put(`${API_PROFILES_URL}/${user.name}`, {
+      const response = await profileService.updateProfile(user.name, {
         avatar: avatarData
       });
       const updatedUser = { ...user, avatar: avatarData };
@@ -165,7 +160,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Avatar update failed:', error);
       throw error;
     }
-  }, [api, user]);
+  }, [user]);
 
   const value = {
     user,

@@ -17,6 +17,8 @@ import EditVenue from './pages/Venues/EditVenue';
 import Profile from './pages/Profile';
 import Bookings from './pages/Bookings';
 import NotFound from './components/NotFound';
+import Contact from './pages/Contact';
+import About from './pages/About';
 
 // Components
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -56,6 +58,8 @@ const router = createBrowserRouter(
         
             <Route path={ROUTES.VENUES} element={<VenueList />} />
             <Route path={ROUTES.VENUE_DETAILS} element={<Venue />} />
+            <Route path={ROUTES.CONTACT} element={<Contact />} />
+            <Route path={ROUTES.ABOUT} element={<About />} />
         
         {/* Protected Routes */}
         <Route

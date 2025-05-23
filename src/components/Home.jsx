@@ -5,6 +5,7 @@ import Button from './common/Button';
 import Card from './common/Card';
 import { venueService } from '../API';
 import { useAuth } from '../context/AuthContext';
+import HeroSection from './HeroSection';
 
 const Home = () => {
   const [topVenues, setTopVenues] = useState([]);
@@ -15,7 +16,9 @@ const Home = () => {
     const fetchTopVenues = async () => {
       try {
         const allVenues = await venueService.getAll();
-        const fiveStarVenues = allVenues
+        console.log('venueService.getAll response:', allVenues);
+        const venuesData = allVenues || [];
+        const fiveStarVenues = venuesData
           .filter(venue => venue.rating === 5)
           .sort(() => Math.random() - 0.5)
           .slice(0, 3);
@@ -50,31 +53,7 @@ const Home = () => {
 
   return (
     <div className="relative">
-      {/* Hero Section */}
-      <div className="relative">
-        <div className="absolute inset-0">
-          <img
-            className="w-full h-full object-cover"
-            src="/images/lobby.jpg"
-            alt="Luxury hotel lobby"
-          />
-        </div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-heading tracking-tight text-white sm:text-5xl lg:text-6xl text-center">
-            Tailored Travel, Timeless Memories
-          </h1>
-          <div className="mt-8 flex justify-center space-x-4">
-            <Button
-              variant="primary"
-              to="/venues"
-              size="lg"
-              className="font-menu"
-            >
-              Browse Venues
-            </Button>
-          </div>
-        </div>
-      </div>
+      <HeroSection />
 
       {/* Top Rated Venues Section */}
       <div className="py-16 bg-background">
@@ -115,12 +94,12 @@ const Home = () => {
       </div>
 
       {/* Share Your Home Section */}
-      <div className="py-16 bg-white">
+      <div className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-w-16 aspect-h-9 md:aspect-h-16">
               <img
-            src="/images/tranquil.jpg"
+                src="/images/tranquil.jpg"
                 alt="Tranquil venue"
                 className="object-cover rounded-lg shadow-lg"
               />

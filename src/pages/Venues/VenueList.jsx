@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useApi from '../../hooks/useApi';
+import { venueService } from '../../API';
 import { ROUTES } from '../../utils/constants';
 import SearchBar from '../../components/common/SearchBar';
 import Card from '../../components/common/Card';
@@ -12,6 +12,8 @@ import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
 const VenueList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [venues, setVenues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [filters, setFilters] = useState({
     search: searchParams.get('search') || '',
@@ -25,8 +27,6 @@ const VenueList = () => {
       pets: searchParams.get('pets') === 'true',
     }
   });
-  
-  const { get, loading, error } = useApi();
 
   const hasActiveFilters = useMemo(() => {
     return filters.minPrice || 
@@ -38,13 +38,15 @@ const VenueList = () => {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const params = new URLSearchParams();
         if (filters.search) params.append('search', filters.search);
         if (filters.minPrice) params.append('minPrice', filters.minPrice);
         if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
 
-        const response = await get('/holidaze/venues?' + params.toString());
-        let filteredVenues = response.data || [];
+        const response = await venueService.getAll(params);
+        let filteredVenues = response || [];
         
         // Apply all filters
         filteredVenues = filteredVenues.filter(venue => {
@@ -82,11 +84,14 @@ const VenueList = () => {
         setVenues(sortedVenues);
       } catch (error) {
         console.error('Failed to fetch venues:', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchVenues();
-  }, [filters, get]);
+  }, [filters]);
 
   const handleSearch = (searchTerm) => {
     setFilters(prev => ({ ...prev, search: searchTerm }));

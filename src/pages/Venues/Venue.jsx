@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useApi from '../../hooks/useApi';
+import { venueService } from '../../API';
 import Loading from '../../components/common/Loading';
 import ImageGallery from './components/ImageGallery';
 import VenueHeader from './components/VenueHeader';
@@ -11,9 +11,9 @@ import SuccessModal from '../../components/common/SuccessModal';
 
 const Venue = () => {
   const { id } = useParams();
-  const { get, loading, error } = useApi();
-  
   const [venue, setVenue] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedDates, setSelectedDates] = useState({ from: null, to: null });
   const [modalState, setModalState] = useState({
@@ -23,10 +23,15 @@ const Venue = () => {
 
   const fetchVenue = async () => {
     try {
-      const response = await get(`/holidaze/venues/${id}?_bookings=true&_owner=true`);
-      setVenue(response.data);
+      setLoading(true);
+      setError(null);
+      const response = await venueService.getById(id);
+      setVenue(response);
     } catch (error) {
       console.error('Failed to fetch venue:', error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -34,7 +39,7 @@ const Venue = () => {
     if (id) {
       fetchVenue();
     }
-  }, [id, get]);
+  }, [id]);
 
   const handleDateSelect = (dates) => {
     setSelectedDates(dates);

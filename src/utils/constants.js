@@ -54,6 +54,8 @@ export const ROUTES = {
   VENUE_CREATE: '/venues/create',
   VENUE_EDIT: '/venues/:id/edit',
   BOOKINGS: '/bookings',
+  CONTACT: '/contact',
+  ABOUT: '/about',
   NOT_FOUND: '*',
 };
 

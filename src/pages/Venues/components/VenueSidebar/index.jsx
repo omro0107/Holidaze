@@ -4,8 +4,7 @@ import Calendar from '../../../../components/common/Calendar';
 import Button from '../../../../components/common/Button';
 import { parseISO, isWithinInterval, differenceInDays } from 'date-fns';
 import { useAuth } from '../../../../context/AuthContext';
-import { API_BOOKINGS_URL } from '../../../../API/apiURL';
-import useApi from '../../../../hooks/useApi';
+import { bookingService } from '../../../../API';
 
 const VenueSidebar = ({ 
   price, 
@@ -20,8 +19,7 @@ const VenueSidebar = ({
   onBookingSuccess 
 }) => {
   const { isAuthenticated, user } = useAuth();
-  const { post, loading } = useApi();
-
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [guests, setGuests] = useState(1);
 
@@ -30,13 +28,13 @@ const VenueSidebar = ({
     if (!selectedDates.from || !selectedDates.to) return null;
 
     const nights = differenceInDays(selectedDates.to, selectedDates.from);
-    const totalPrice = nights * price; // Remove multiplication by guests
+    const totalPrice = nights * price;
 
     return {
       nights,
       totalPrice
     };
-  }, [selectedDates, price]); // Remove guests from dependencies
+  }, [selectedDates, price]);
 
   // Check if selected dates overlap with existing bookings
   const hasDateOverlap = (selectedFrom, selectedTo, existingBookings) => {
@@ -54,14 +52,17 @@ const VenueSidebar = ({
 
   const handleBooking = async () => {
     setError('');
+    setLoading(true);
 
     if (!selectedDates.from || !selectedDates.to) {
       setError('Please select check-in and check-out dates');
+      setLoading(false);
       return;
     }
 
     if (hasDateOverlap(selectedDates.from, selectedDates.to, bookings)) {
       setError('These dates are already booked. Please select different dates.');
+      setLoading(false);
       return;
     }
 
@@ -75,14 +76,12 @@ const VenueSidebar = ({
         totalPrice: bookingSummary.totalPrice
       };
 
-      const response = await post(API_BOOKINGS_URL, {
+      await bookingService.create({
         dateFrom: selectedDates.from.toISOString(),
         dateTo: selectedDates.to.toISOString(),
         venueId: venueId,
         guests: guests
       });
-
-      console.log('Booking created successfully:', response);
 
       onSelectDates({ from: null, to: null });
       if (onBookingSuccess) {
@@ -91,6 +90,8 @@ const VenueSidebar = ({
     } catch (error) {
       console.error('Booking error:', error);
       setError('Failed to create booking. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 

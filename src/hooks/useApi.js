@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import api from '../utils/api';
+import api from '../API/client';
 
 const useApi = () => {
   const [loading, setLoading] = useState(false);
