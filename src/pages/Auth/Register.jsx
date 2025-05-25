@@ -9,6 +9,28 @@ import Input from '../../components/common/Input';
 import Header from '../../components/Header/Navigation';
 import Footer from '../../components/Footer';
 
+
+/**
+ * Registration page component.
+ *
+ * Renders a user registration form with fields for name, email, password,
+ * optional avatar URL, and a checkbox for registering as a venue manager.
+ * 
+ * Validates inputs using a Yup schema and react-hook-form.
+ * On successful submission, calls the registration function from AuthContext,
+ * then redirects to the login page with a success message.
+ * Displays validation and submission error messages.
+ * 
+ * Uses:
+ * - react-hook-form for form management and validation
+ * - yup for schema validation via yupResolver
+ * - useAuth custom hook for authentication context
+ * - useNavigate from react-router-dom for navigation after registration
+ * - Tailwind CSS for styling and responsive layout
+ * 
+ * @component
+ * @returns {JSX.Element} Registration form page
+ */
 const Register = () => {
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();

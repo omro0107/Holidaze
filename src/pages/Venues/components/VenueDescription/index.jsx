@@ -3,6 +3,18 @@ import PropTypes from 'prop-types';
 import { UserGroupIcon, MapPinIcon } from '@heroicons/react/24/outline';
 const placeholderProfile = '/images/placeholder-profile.png';
 
+/**
+ * VenueDescription shows details about a venue including host info, description, and guest capacity.
+ *
+ * @param {Object} props
+ * @param {string} props.description - Text describing the venue.
+ * @param {number} props.maxGuests - Maximum number of guests allowed.
+ * @param {Object} [props.owner] - Information about the venue owner/host.
+ * @param {string} [props.owner.name] - Owner's name.
+ * @param {string|Object} [props.owner.avatar] - Owner's avatar image URL or object with URL.
+ *
+ * @returns {JSX.Element} Venue description section UI
+ */
 const VenueDescription = ({ 
   description, 
   maxGuests, 

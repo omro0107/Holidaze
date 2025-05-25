@@ -1,9 +1,32 @@
+/**
+ * @fileoverview A customizable calendar component based on `react-day-picker`
+ * for selecting single, multiple, or ranged dates, with support for disabling
+ * specific dates and applying custom styles.
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DayPicker } from 'react-day-picker';
 import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
 
+/**
+ * Calendar component using `react-day-picker` with Tailwind-compatible styling and
+ * support for disabled dates, selected ranges, and UI customization.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Date|Date[]|{from: Date, to: Date}} props.selected - The currently selected date(s).
+ * @param {function} props.onSelect - Callback triggered when the user selects a date or range.
+ * @param {boolean} [props.disabled=false] - Disables all dates when true.
+ * @param {Date} [props.minDate] - The earliest selectable date.
+ * @param {Date} [props.maxDate] - The latest selectable date.
+ * @param {Array<Date|{from: Date, to: Date}>} [props.disabledDates=[]] - List of explicitly disabled dates or date ranges.
+ * @param {number} [props.numberOfMonths=1] - Number of calendar months to show.
+ * @param {'single'|'multiple'|'range'} [props.mode='single'] - Selection mode for the calendar.
+ * @param {string} [props.className=''] - Additional custom class names for container styling.
+ * @returns {JSX.Element} A styled calendar component.
+ */
 const Calendar = ({
   selected,
   onSelect,

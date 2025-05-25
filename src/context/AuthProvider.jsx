@@ -6,6 +6,18 @@ import { API_AUTH_URL } from '../API/config';
 import { LOCAL_STORAGE_KEYS } from '../utils/constants';
 import { authService, profileService } from '../API';
 
+
+/**
+ * Provides authentication context to the application.
+ * 
+ * Manages user authentication state including login, logout, registration,
+ * profile updates, and persists authentication tokens and user data in localStorage.
+ * 
+ * @param {object} props
+ * @param {React.ReactNode} props.children - Child components wrapped by this provider
+ * 
+ * @returns {JSX.Element} AuthContext.Provider wrapping children with auth state and methods
+ */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN));
@@ -13,13 +25,21 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const initializeAuthCalled = useRef(false);
 
-  // Login handler
+  
+  /**
+   * Handles user login.
+   * 
+   * @async
+   * @function login
+   * @param {string} email - User's email
+   * @param {string} password - User's password
+   * @returns {Promise<Object>} Resolves with the login response data including accessToken and user info
+   * @throws Throws error if login fails
+   */
   const login = useCallback(async (email, password) => {
     try {
-      console.log('Attempting login with API URL:', `${API_AUTH_URL}/login`);
       const response = await authService.login(email, password);
 
-      console.log('Login response:', response);
       const { accessToken, ...userData } = response;
       
       // First store the user data and token
@@ -48,7 +68,16 @@ export const AuthProvider = ({ children }) => {
     }
   }, [navigate]);
 
-  // Register handler
+  
+  /**
+   * Registers a new user and logs them in automatically.
+   * 
+   * @async
+   * @function register
+   * @param {Object} userData - User registration data including email, password, and venueManager flag
+   * @returns {Promise<Object>} Resolves with registration response
+   * @throws Throws error if registration fails
+   */
   const register = useCallback(async (userData) => {
     try {
       // Ensure venueManager flag is properly set
@@ -69,7 +98,11 @@ export const AuthProvider = ({ children }) => {
     }
   }, [login]);
 
-  // Logout handler
+  /**
+   * Logs out the current user by clearing auth tokens and user info.
+   * 
+   * @function logout
+   */
   const logout = useCallback(() => {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.USER);
@@ -78,7 +111,10 @@ export const AuthProvider = ({ children }) => {
     navigate('/login');
   }, [navigate]);
 
-    // Initialize auth state
+   /**
+   * Initializes authentication state on component mount.
+   * Fetches stored token and user info, validates profile data, and updates state accordingly.
+   */
   useEffect(() => {
     const initializeAuth = async () => {
       if (initializeAuthCalled.current) return;
@@ -123,7 +159,15 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, [logout]); // Remove api from dependencies
 
-  // Update profile handler
+  /**
+   * Updates the current user's profile.
+   * 
+   * @async
+   * @function updateProfile
+   * @param {Object} profileData - Profile data to update
+   * @returns {Promise<Object>} Resolves with updated profile data from server
+   * @throws Throws error if update fails
+   */
   const updateProfile = useCallback(async (profileData) => {
     try {
       const response = await profileService.updateProfile(user.name, profileData);
@@ -137,7 +181,15 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  // Avatar update handler
+   /**
+   * Updates the current user's avatar.
+   * 
+   * @async
+   * @function updateAvatar
+   * @param {string|File} avatarData - New avatar data or URL
+   * @returns {Promise<Object>} Resolves with updated avatar response
+   * @throws Throws error if update fails
+   */
   const updateAvatar = useCallback(async (avatarData) => {
     try {
       const response = await profileService.updateProfile(user.name, {

@@ -1,3 +1,10 @@
+/**
+ * Main app routing configuration and entry point.
+ * 
+ * Defines all routes, including public, protected, and layout-wrapped routes.
+ * Wraps routes with authentication context and protection where needed.
+ */
+
 import React from 'react';
 import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
@@ -23,6 +30,10 @@ import About from './pages/About';
 // Components
 import ProtectedRoute from './components/common/ProtectedRoute';
 
+/**
+ * Wrapper component that provides authentication context to its children routes.
+ * Used as a root wrapper for all routes that require auth state.
+ */
 const AuthLayout = () => {
   return (
     <AuthProvider>
@@ -111,6 +122,10 @@ const router = createBrowserRouter(
   }
 );
 
+/**
+ * Main app component.
+ * Provides routing via React Router's RouterProvider with predefined routes.
+ */
 function App() {
   return <RouterProvider router={router} />;
 }

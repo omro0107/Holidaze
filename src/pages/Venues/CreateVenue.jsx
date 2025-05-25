@@ -48,6 +48,21 @@ const schema = yup.object().shape({
   }),
 });
 
+/**
+ * CreateVenue component allows authenticated venue managers
+ * to create a new venue by filling out a form with venue details,
+ * including name, description, images, price, location, and amenities.
+ * 
+ * The form uses React Hook Form for validation powered by Yup schema.
+ * On successful submission, it sends the venue data to the API and navigates
+ * to the newly created venue's detail page.
+ * 
+ * Redirects to login page if user is not authenticated or
+ * to venues list if the user is not a venue manager.
+ * 
+ * @component
+ * @returns {JSX.Element} The create venue form UI.
+ */
 const CreateVenue = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
@@ -82,18 +97,43 @@ const CreateVenue = () => {
 
   const mediaUrls = watch('media') || [''];
 
+  /**
+   * Adds a new empty input field for media URL.
+   * Updates the form state to include one more media input.
+   */
   const handleAddMediaUrl = () => {
     setValue('media', [...mediaUrls, '']);
   };
 
+  /**
+   * Removes a media URL input field at the specified index.
+   * Updates the form state accordingly.
+   * 
+   * @param {number} index - Index of the media URL field to remove.
+   */
   const handleRemoveMediaUrl = (index) => {
     setValue('media', mediaUrls.filter((_, i) => i !== index));
   };
 
+   /**
+   * Handles form submission.
+   * Filters out empty media URLs, formats data as required by the API,
+   * and sends a request to create the venue.
+   * On success, navigates to the new venue page.
+   * On failure, displays appropriate error messages or redirects to login.
+   * 
+   * @param {Object} formData - The data collected from the form inputs.
+   * @param {string} formData.name - Venue name.
+   * @param {string} formData.description - Venue description.
+   * @param {string[]} formData.media - Array of media URLs.
+   * @param {number} formData.price - Price per night.
+   * @param {number} formData.maxGuests - Maximum number of guests allowed.
+   * @param {Object} formData.meta - Amenities metadata (wifi, parking, etc.).
+   * @param {Object} formData.location - Venue location details.
+   * @returns {Promise<void>} Promise resolving after API call.
+   */
   const onSubmit = async (formData) => {
     try {
-      console.log('Form submitted with data:', formData);
-      
       // Transform media URLs to expected format
       const filteredMedia = formData.media
         .filter(url => url?.trim() !== '')
@@ -123,16 +163,12 @@ const CreateVenue = () => {
           lng: 0,
         }
       };
-
-      console.log('Sending venue data:', venueData);
       
       setLoading(true);
       try {
         const response = await venueService.create(venueData);
-        console.log('API Response:', response);
         navigate(`/venues/${response.id}`);
       } catch (error) {
-        console.error('Failed to create venue:', error);
         // Check if error is due to authentication
         if (error.message.includes('Unauthorized') || error.message.includes('Authentication required')) {
           navigate('/login');
@@ -146,12 +182,19 @@ const CreateVenue = () => {
         setLoading(false);
       }
     } catch (error) {
-      console.error('Failed to create venue:', error);
       setError('submit', {
         type: 'manual',
         message: error.message || 'Failed to create venue',
       });
     }
+  };
+
+  // Handle form validation errors
+  const onError = () => {
+    setError('submit', {
+      type: 'manual',
+      message: 'Please fix the form errors before submitting',
+    });
   };
 
   // Redirect if user is not authenticated or not a venue manager
@@ -168,15 +211,7 @@ const CreateVenue = () => {
       <h1 className="text-3xl font-normal text-text mb-8">Create New Venue</h1>
       
       <form 
-        onSubmit={handleSubmit(
-          (data) => {
-            console.log('Form submitted, calling onSubmit');
-            onSubmit(data);
-          },
-          (errors) => {
-            console.log('Form validation errors:', errors);
-          }
-        )} 
+        onSubmit={handleSubmit(onSubmit, onError)} 
         className="space-y-6"
         noValidate
       >
@@ -333,6 +368,13 @@ const CreateVenue = () => {
             </label>
           </div>
         </div>
+
+        {/* Error Message */}
+        {errors.submit && (
+          <div className="text-red-600 text-sm text-center">
+            {errors.submit.message}
+          </div>
+        )}
 
         {/* Submit */}
         <div className="flex justify-end space-x-3">

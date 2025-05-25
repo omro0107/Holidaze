@@ -4,6 +4,27 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import Loading from '../Loading';
 
+/**
+ * Protects routes based on authentication and role.
+ *
+ * Redirects users based on their authentication status and optionally
+ * their `venueManager` role.
+ *
+ * - Redirects to `/login` if authentication is required and user is not logged in.
+ * - Redirects to `/` if venue manager access is required but user lacks the role.
+ * - Redirects to `/` if route does *not* require auth but the user is already authenticated (e.g. login/register).
+ *
+ * @component
+ * @example
+ * <ProtectedRoute requireAuth={true} requireVenueManager={true}>
+ *   <VenueDashboard />
+ * </ProtectedRoute>
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - The content to render if access is allowed
+ * @param {boolean} [props.requireAuth=true] - Whether authentication is required
+ * @param {boolean} [props.requireVenueManager=false] - Whether venue manager role is required
+ */
 const ProtectedRoute = ({ 
   children, 
   requireAuth = true,

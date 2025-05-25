@@ -1,6 +1,13 @@
 import React from 'react';
 import Button from '../common/Button';
 
+/**
+ * HeroSection component displays a fullscreen hero banner with a background image,
+ * a headline, and a call-to-action button linking to the venues page.
+ *
+ * @component
+ * @returns {JSX.Element} Hero section with background image and CTA button
+ */
 const HeroSection = () => {
   return (
     <section className="relative h-[calc(100vh-80px)] max-h-[700px] min-h-[500px]">

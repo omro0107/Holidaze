@@ -4,6 +4,33 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Button from '../Button';
 
+/**
+ * Modal dialog component with support for header, footer, size options,
+ * and custom close behavior.
+ *
+ * @component
+ * @example
+ * <Modal
+ *   isOpen={true}
+ *   onClose={() => setOpen(false)}
+ *   title="Confirm Action"
+ *   footer={<Button onClick={handleConfirm}>Confirm</Button>}
+ * >
+ *   Are you sure you want to continue?
+ * </Modal>
+ *
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Whether the modal is visible
+ * @param {function} props.onClose - Callback fired when the modal requests to close
+ * @param {React.ReactNode} [props.title] - Optional modal title
+ * @param {React.ReactNode} props.children - Modal content
+ * @param {React.ReactNode} [props.footer] - Optional footer content (e.g., buttons)
+ * @param {'sm'|'md'|'lg'|'xl'|'full'} [props.size='md'] - Width size of the modal
+ * @param {boolean} [props.showClose=true] - Whether to show the close (X) icon
+ * @param {boolean} [props.closeOnOverlayClick=true] - Whether clicking on the overlay should close the modal
+ * @param {boolean} [props.preventClose=false] - Prevents closing via X or overlay
+ * @param {string} [props.className] - Optional custom class name for modal container
+ */
 const Modal = ({
   isOpen,
   onClose,

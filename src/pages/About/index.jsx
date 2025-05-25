@@ -1,5 +1,20 @@
 import React from 'react';
 
+/**
+ * About page component for Holidaze.
+ * 
+ * Displays the company mission, a welcome message, and key reasons to book with Holidaze.
+ * 
+ * Structure:
+ * - Mission section with an image and mission statement.
+ * - Welcome section with a cozy image and descriptive text about the platform.
+ * - "Why Book" section highlighting curated stays, peace of mind, real human support, and trusted taste.
+ * 
+ * Uses Tailwind CSS for responsive layout and styling.
+ * 
+ * @component
+ * @returns {JSX.Element} The About page content
+ */
 const About = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

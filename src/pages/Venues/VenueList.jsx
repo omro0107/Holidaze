@@ -9,6 +9,15 @@ import Button from '../../components/common/Button';
 import FilterModal from '../../components/common/FilterModal';
 import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
 
+/**
+ * VenueList component.
+ * Displays a searchable and filterable list of venues.
+ * Fetches venues from the API, applies client-side filters,
+ * and updates URL query parameters based on filters.
+ * 
+ * @component
+ * @returns {JSX.Element} Rendered VenueList component
+ */
 const VenueList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [venues, setVenues] = useState([]);
@@ -28,6 +37,11 @@ const VenueList = () => {
     }
   });
 
+  /**
+   * Memoized boolean to indicate if any filter is active besides search.
+   * Used to display an "Active" badge on the filter button.
+   * @type {boolean}
+   */
   const hasActiveFilters = useMemo(() => {
     return filters.minPrice || 
            filters.maxPrice || 
@@ -35,6 +49,11 @@ const VenueList = () => {
            Object.values(filters.amenities).some(value => value);
   }, [filters]);
 
+   /**
+   * Effect hook to fetch venues whenever filters change.
+   * Applies filters on the client side after fetching all venues.
+   * Also sorts venues by creation date (newest first).
+   */
   useEffect(() => {
     const fetchVenues = async () => {
       try {
@@ -93,6 +112,10 @@ const VenueList = () => {
     fetchVenues();
   }, [filters]);
 
+  /**
+   * Handler to update search term in filters and URL params.
+   * @param {string} searchTerm - The new search term from the search bar
+   */
   const handleSearch = (searchTerm) => {
     setFilters(prev => ({ ...prev, search: searchTerm }));
     setSearchParams(prev => {
@@ -105,6 +128,11 @@ const VenueList = () => {
     });
   };
 
+  /**
+   * Handler to apply new filters from the filter modal.
+   * Updates filter state and URL query parameters accordingly.
+   * @param {Object} newFilters - New filter criteria
+   */
   const handleApplyFilters = (newFilters) => {
     setFilters(prev => ({
       ...prev,

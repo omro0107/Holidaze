@@ -3,6 +3,31 @@ import Modal from '../Modal';
 import Button from '../Button';
 import StarRating from '../../StarRating';
 
+/**
+ * Modal for applying filters like price range, rating, and amenities.
+ *
+ * @component
+ * @example
+ * return (
+ *   <FilterModal
+ *     isOpen={isModalOpen}
+ *     onClose={() => setModalOpen(false)}
+ *     onApply={(filters) => console.log(filters)}
+ *     initialFilters={{
+ *       minPrice: 100,
+ *       maxPrice: 500,
+ *       rating: 4,
+ *       amenities: { wifi: true }
+ *     }}
+ *   />
+ * )
+ *
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Whether the modal is open
+ * @param {Function} props.onClose - Function to close the modal
+ * @param {Function} props.onApply - Function to apply filters
+ * @param {Object} [props.initialFilters={}] - Initial filter values
+ */
 const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
   const [filters, setFilters] = useState({
     minPrice: initialFilters.minPrice || '',
@@ -16,6 +41,10 @@ const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
     }
   });
 
+  /**
+   * Toggles an amenity checkbox value.
+   * @param {string} amenity - The amenity key to toggle (e.g., 'wifi')
+   */
   const handleAmenityChange = (amenity) => {
     setFilters(prev => ({
       ...prev,
@@ -26,6 +55,9 @@ const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
     }));
   };
 
+  /**
+   * Clears all filters and applies the cleared values.
+   */
   const handleClear = () => {
     const clearedFilters = {
       minPrice: '',
@@ -43,6 +75,10 @@ const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
     onClose(); // Close the modal after clearing
   };
 
+  
+  /**
+   * Applies the current filter values.
+   */
   const handleApply = () => {
     onApply(filters);
     onClose();

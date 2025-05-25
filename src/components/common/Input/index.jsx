@@ -2,6 +2,39 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 
+/**
+ * A customizable and accessible input field component.
+ *
+ * Supports error and helper text, optional icons, full-width layout, and forwarded refs.
+ *
+ * @component
+ * @example
+ * <Input
+ *   id="email"
+ *   label="Email address"
+ *   type="email"
+ *   placeholder="you@example.com"
+ *   error="Invalid email"
+ *   helper="We'll never share your email."
+ *   required
+ *   fullWidth
+ * />
+ *
+ * @param {Object} props
+ * @param {string} props.label - The label for accessibility (used as aria-label and default placeholder)
+ * @param {string} [props.type='text'] - The input type
+ * @param {string} [props.error] - Error message (renders in red and applies error styles)
+ * @param {string} [props.helper] - Helper text (renders in gray under the input)
+ * @param {React.ReactNode} [props.leftIcon] - Optional icon rendered on the left
+ * @param {React.ReactNode} [props.rightIcon] - Optional icon rendered on the right
+ * @param {boolean} [props.fullWidth=false] - Whether the input should take full width
+ * @param {string} [props.className] - Additional classes for the input element
+ * @param {string} [props.containerClassName] - Additional classes for the outer container
+ * @param {boolean} [props.required=false] - Marks the field as required (sets aria-required)
+ * @param {string} [props.placeholder] - Custom placeholder (defaults to `label` if not set)
+ * @param {string} props.id - ID of the input, required for aria-describedby and accessibility
+ * @param {Object} ref - Forwarded ref for the input element
+ */
 const Input = forwardRef(({
   label,
   type = 'text',

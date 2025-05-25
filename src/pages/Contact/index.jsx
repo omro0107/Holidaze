@@ -6,30 +6,56 @@ import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 
+/**
+ * Validation schema for contact form using Yup.
+ * - name: required string
+ * - email: required valid email string
+ * - message: required string with minimum 10 characters
+ */
 const schema = yup.object().shape({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Must be a valid email').required('Email is required'),
   message: yup.string().required('Message is required').min(10, 'Message must be at least 10 characters'),
 });
 
+/**
+ * Contact component renders a contact form with validation.
+ * Shows a success modal on successful form submission.
+ * 
+ * Uses react-hook-form for form handling and Yup for validation.
+ * 
+ * @component
+ * @returns {JSX.Element} Rendered contact page UI.
+ */
 const Contact = () => {
   const [showModal, setShowModal] = useState(false);
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting }
   } = useForm({
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = async (data) => {
+   /**
+   * Form submit handler.
+   * Shows success modal and resets the form on successful submission.
+   * 
+   * @async
+   * @function
+   * @returns {Promise<void>}
+   */
+  const onSubmit = async () => {
     try {
-      console.log('Form submitted:', data);
       setShowModal(true);
       reset();
     } catch (error) {
-      console.error('Error submitting form:', error);
+      setError('submit', {
+        type: 'manual',
+        message: 'Failed to submit form. Please try again.'
+      });
     }
   };
 
@@ -96,6 +122,12 @@ const Contact = () => {
             )}
           </div>
 
+          {errors.submit && (
+            <div className="text-red-600 text-sm text-center">
+              {errors.submit.message}
+            </div>
+          )}
+
           <div className="flex justify-center">
             <Button
               type="submit"
@@ -116,7 +148,7 @@ const Contact = () => {
       >
         <div className="p-6">
           <p className="text-lg text-[#70533A] mb-4">
-            We’ve received your message and will be in touch shortly.
+            We've received your message and will be in touch shortly.
           </p>
           <div className="flex justify-end">
             <Button onClick={() => setShowModal(false)}>

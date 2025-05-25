@@ -9,6 +9,25 @@ import Input from '../../components/common/Input';
 import Header from '../../components/Header/Navigation';
 import Footer from '../../components/Footer';
 
+/**
+ * Login page component.
+ *
+ * Renders a login form with email and password inputs, validating
+ * user input with Yup schema and react-hook-form.
+ * 
+ * On successful form submission, calls the login function from the AuthContext.
+ * Displays images on the left side for large screens for visual appeal.
+ * Shows error messages for validation and authentication failures.
+ * 
+ * Uses:
+ * - react-hook-form for form state management and validation
+ * - yup for schema validation via yupResolver
+ * - useAuth custom hook for authentication context
+ * - Tailwind CSS for styling and layout
+ * 
+ * @component
+ * @returns {JSX.Element} Login form page
+ */
 const Login = () => {
   const { login } = useAuth();
   const { loginSchema } = useFormValidation();
@@ -24,10 +43,8 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log('Login attempt with:', { email: data.email });
       await login(data.email, data.password);
     } catch (err) {
-      console.error('Login error:', err);
       setError('submit', {
         type: 'manual',
         message: err.message || 'Failed to login',

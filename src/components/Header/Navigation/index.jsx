@@ -7,10 +7,22 @@ import { useAuth } from '../../../hooks/useAuth';
 import Avatar from '../../Avatar';
 import Button from '../../common/Button';
 
+/**
+ * Main navigation component for the Holidaze application.
+ * Displays navigation links, user profile menu, and handles mobile responsiveness.
+ * Adapts based on authentication state.
+ *
+ * @component
+ * @returns {JSX.Element} Navigation bar element
+ */
 const Navigation = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const location = useLocation();
 
+  /**
+   * Static navigation links available to all users.
+   * @type {Array<{ name: string, href: string }>}
+   */
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Venues', href: '/venues' },
@@ -18,17 +30,28 @@ const Navigation = () => {
     { name: 'About', href: '/about' },
   ];
 
+  /**
+   * User-specific navigation links shown when logged in.
+   * Includes 'Create Venue' for venue managers.
+   * @type {Array<{ name: string, href: string }>}
+   */
   const userNavigation = [
     { name: 'My Profile', href: '/profile' },
     ...(user?.venueManager ? [{ name: 'Create Venue', href: '/venues/create' }] : []),
   ];
 
+  /**
+   * Checks if the given path matches the current URL pathname.
+   *
+   * @param {string} path - The path to compare with the current location
+   * @returns {boolean} True if path matches the current location pathname
+   */
   const isCurrentPath = (path) => {
     return location.pathname === path;
   };
 
   return (
-    <Disclosure as="nav" className="bg-[#F2EADF]">
+    <Disclosure as="nav" className="bg-background" role="navigation" aria-label="main">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

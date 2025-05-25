@@ -8,6 +8,22 @@ import Button from '../../../../components/common/Button';
 import Modal from '../../../../components/common/Modal';
 import { venueService } from '../../../../API';
 
+
+/**
+ * VenueHeader displays the venue's name, location, rating, and owner controls for editing/deleting.
+ * Only the owner can see edit and delete buttons.
+ *
+ * @param {Object} props
+ * @param {string} props.id - Unique identifier of the venue.
+ * @param {string} props.name - Venue name.
+ * @param {string} [props.city] - City where the venue is located.
+ * @param {string} [props.country] - Country where the venue is located.
+ * @param {number} [props.rating=0] - Average rating of the venue.
+ * @param {Object} [props.owner] - Venue owner details.
+ * @param {string} props.owner.name - Name of the venue owner.
+ *
+ * @returns {JSX.Element} Venue header section with name, location, rating, and owner controls.
+ */
 const VenueHeader = ({ 
   id,
   name, 
@@ -22,6 +38,10 @@ const VenueHeader = ({
   const [loading, setLoading] = useState(false);
   const location = [city, country].filter(Boolean).join(', ');
 
+  /**
+   * Handles deletion of the venue by calling the API,
+   * then navigates to the profile page on success.
+   */
   const handleDelete = async () => {
     try {
       setLoading(true);

@@ -5,6 +5,30 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Button from '../Button';
 import Input from '../Input';
 
+/**
+ * A responsive search bar component that supports optional auto-search,
+ * debouncing, and custom handlers.
+ *
+ * If `onSearch` is not provided, it defaults to navigating to `/venues?search=term`.
+ *
+ * @component
+ * @example
+ * // With custom search function
+ * <SearchBar onSearch={(term) => handleSearch(term)} />
+ *
+ * // Default behavior (navigates to /venues)
+ * <SearchBar />
+ *
+ * @param {Object} props
+ * @param {function} [props.onSearch] - Optional custom function to handle search input
+ * @param {string} [props.initialValue] - Default search input value
+ * @param {string} [props.placeholder] - Placeholder text for the input
+ * @param {string} [props.className] - Custom className for styling the outer container
+ * @param {boolean} [props.showButton=true] - Whether to show the "Search" button
+ * @param {boolean} [props.autoSearch=false] - Whether to search as the user types (with debounce)
+ * @param {number} [props.minLength=2] - Minimum input length required before triggering search
+ * @param {number} [props.debounceMs=300] - Milliseconds to wait before triggering auto search
+ */
 const SearchBar = ({
   onSearch,
   initialValue = '',

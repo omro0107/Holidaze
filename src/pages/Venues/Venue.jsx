@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { venueService } from '../../API';
 import Loading from '../../components/common/Loading';
@@ -9,6 +9,15 @@ import VenueAmenities from './components/VenueAmenities';
 import VenueSidebar from './components/VenueSidebar';
 import SuccessModal from '../../components/common/SuccessModal';
 
+/**
+ * Venue page component.
+ * Fetches and displays detailed information about a venue,
+ * including images, description, amenities, and booking sidebar.
+ * Handles image gallery navigation and booking success modal.
+ * 
+ * @component
+ * @returns {JSX.Element} The Venue page UI
+ */
 const Venue = () => {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
@@ -21,7 +30,12 @@ const Venue = () => {
     details: null
   });
 
-  const fetchVenue = async () => {
+   /**
+   * Fetches venue data from API by ID.
+   * Updates state accordingly.
+   * Handles loading and error states.
+   */
+  const fetchVenue = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -33,18 +47,30 @@ const Venue = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
+   /**
+   * Effect hook to fetch venue data on component mount or when ID changes.
+   */
   useEffect(() => {
     if (id) {
       fetchVenue();
     }
-  }, [id]);
+  }, [id, fetchVenue]);
 
+   /**
+   * Handler to update selected booking dates.
+   * @param {{ from: Date|null, to: Date|null }} dates - Selected date range
+   */
   const handleDateSelect = (dates) => {
     setSelectedDates(dates);
   };
 
+   /**
+   * Handler called after a successful booking.
+   * Opens success modal and refreshes venue data.
+   * @param {Object} bookingDetails - Details of the successful booking
+   */
   const handleBookingSuccess = async (bookingDetails) => {
     setModalState({
       isOpen: true,
@@ -54,6 +80,10 @@ const Venue = () => {
     await fetchVenue();
   };
 
+  
+  /**
+   * Closes the success modal and clears its state.
+   */
   const handleCloseModal = () => {
     setModalState({
       isOpen: false,
@@ -61,12 +91,20 @@ const Venue = () => {
     });
   };
 
+   /**
+   * Advances to the next image in the gallery.
+   * Wraps around to the first image if currently at the last.
+   */
   const handleNextImage = () => {
     setCurrentImageIndex((prev) => 
       prev === venue.media.length - 1 ? 0 : prev + 1
     );
   };
 
+   /**
+   * Moves to the previous image in the gallery.
+   * Wraps around to the last image if currently at the first.
+   */
   const handlePreviousImage = () => {
     setCurrentImageIndex((prev) => 
       prev === 0 ? venue.media.length - 1 : prev - 1

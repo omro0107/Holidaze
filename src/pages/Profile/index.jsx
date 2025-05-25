@@ -11,6 +11,14 @@ import Modal from '../../components/common/Modal';
 import Input from '../../components/common/Input';
 import Tabs from '../../components/common/Tabs';
 
+/**
+ * Profile page component.
+ * Shows user profile info, venues (if venue manager), bookings, and venue bookings.
+ * Allows updating avatar and canceling bookings.
+ *
+ * @component
+ * @returns {JSX.Element} Profile page UI
+ */
 const Profile = () => {
   const navigate = useNavigate();
   const { user, updateAvatar } = useAuth();
@@ -29,6 +37,11 @@ const Profile = () => {
   const [cancellingBooking, setCancellingBooking] = useState(false);
   const [activeTab, setActiveTab] = useState('venues');
 
+  /**
+   * Fetches profile-related data including venues, bookings, and venue bookings.
+   * Sets corresponding state variables.
+   * Handles errors and loading state.
+   */
   const fetchUserData = React.useCallback(async () => {
     try {
       // Get venues with bookings and customer info
@@ -78,6 +91,11 @@ const Profile = () => {
     }
   }, [user?.name, fetchUserData]);
 
+  
+  /**
+   * Handles cancelling a booking by calling API and refreshing data.
+   * Shows loading and error states.
+   */
   const handleCancelBooking = async () => {
     if (!selectedBooking) return;
 
@@ -98,6 +116,10 @@ const Profile = () => {
     }
   };
 
+  /**
+   * Handles avatar update by calling updateAvatar from auth context.
+   * Validates input URL and manages error state.
+   */
   const handleUpdateAvatar = async () => {
     try {
       setError(null);

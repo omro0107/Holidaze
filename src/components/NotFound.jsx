@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 import { HomeIcon } from '@heroicons/react/24/outline';
 import Button from './common/Button';
 
+/**
+ * NotFound component displays a 404 error page
+ * with navigation options to return home, browse venues,
+ * or contact support.
+ *
+ * @component
+ * @returns {JSX.Element} The 404 Not Found page UI
+ */
 const NotFound = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 sm:px-6 lg:px-8">

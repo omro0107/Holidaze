@@ -10,6 +10,10 @@ import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
 import { VALIDATION } from '../../utils/constants';
 
+/**
+ * Validation schema for editing a venue, using Yup.
+ * Defines required fields, types, and validation rules.
+ */
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -49,6 +53,17 @@ const schema = yup.object().shape({
   }),
 });
 
+/**
+ * EditVenue component allows authenticated venue managers
+ * to edit existing venue details.
+ * It fetches venue data by ID, populates the form,
+ * and handles update or deletion of the venue.
+ *
+ * Redirects unauthorized users to login or venues list pages.
+ * 
+ * @component
+ * @returns {JSX.Element} The edit venue form UI
+ */
 const EditVenue = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -73,6 +88,10 @@ const EditVenue = () => {
   const mediaUrls = watch('media') || [''];
 
   useEffect(() => {
+    /**
+     * Fetches venue details by ID, sets local venue state,
+     * and pre-fills the form fields with venue data.
+     */
     const fetchVenue = async () => {
       try {
         setLoading(true);
@@ -101,7 +120,6 @@ const EditVenue = () => {
           },
         });
       } catch (error) {
-        console.error('Failed to fetch venue:', error);
         setError('submit', {
           type: 'manual',
           message: 'Failed to load venue data',
@@ -116,18 +134,33 @@ const EditVenue = () => {
     }
   }, [id, reset, setError]);
 
+  /**
+   * Adds an empty media URL field to the form.
+   */
   const handleAddMediaUrl = () => {
     setValue('media', [...mediaUrls, '']);
   };
 
+  /**
+   * Removes a media URL field at the specified index.
+   * 
+   * @param {number} index - Index of the media URL to remove.
+   */
   const handleRemoveMediaUrl = (index) => {
     setValue('media', mediaUrls.filter((_, i) => i !== index));
   };
 
+  /**
+   * Handles form submission to update venue data.
+   * Cleans media URLs, prepares payload, calls API,
+   * and navigates to venue page on success.
+   * Shows errors or redirects to login if unauthorized.
+   * 
+   * @param {Object} formData - Form data submitted by user.
+   * @returns {Promise<void>}
+   */
   const onSubmit = async (formData) => {
-    try {
-      console.log('Form submitted with data:', formData);
-      
+    try {      
       // Transform media URLs to expected format
       const filteredMedia = formData.media
         .filter(url => url?.trim() !== '')
@@ -156,13 +189,10 @@ const EditVenue = () => {
           lng: venue?.location?.lng || 0,
         }
       };
-
-      console.log('Sending venue data:', venueData);
       
       setLoading(true);
       try {
-        const response = await venueService.update(id, venueData);
-        console.log('API Response:', response);
+        await venueService.update(id, venueData);
         navigate(`/venues/${id}`);
       } catch (error) {
         console.error('Failed to update venue:', error);
@@ -186,6 +216,12 @@ const EditVenue = () => {
     }
   };
 
+   /**
+   * Deletes the current venue and redirects to the user profile page.
+   * Handles errors by displaying messages.
+   * 
+   * @returns {Promise<void>}
+   */
   const handleDelete = async () => {
     try {
       setLoading(true);

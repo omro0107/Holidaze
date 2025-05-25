@@ -1,7 +1,26 @@
+/**
+ * @fileoverview Avatar component for displaying user profile images with optional
+ * size, status indicator, and click interaction.
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
+
 const placeholderAvatar = '/images/placeholder-profile.png';
 
+/**
+ * Renders a circular user avatar with optional status indicator and interactivity.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {string} [props.src] - Image source URL. Falls back to a placeholder if not provided or fails to load.
+ * @param {string} [props.alt] - Alternative text for the image.
+ * @param {'xs'|'sm'|'md'|'lg'|'xl'|'2xl'} [props.size='md'] - Size of the avatar.
+ * @param {'online'|'offline'|'busy'|'away'} [props.status] - Status indicator to show on the avatar.
+ * @param {string} [props.className] - Optional additional Tailwind CSS classes.
+ * @param {function} [props.onClick] - Optional click handler. Makes the avatar interactive if provided.
+ * @returns {JSX.Element} The rendered avatar component.
+ */
 const Avatar = ({
   src,
   alt,

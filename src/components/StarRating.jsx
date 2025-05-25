@@ -3,6 +3,20 @@ import PropTypes from 'prop-types';
 import { StarIcon as StarOutline } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid';
 
+/**
+ * StarRating component displays a star-based rating UI.
+ * It supports half-star precision, different sizes,
+ * and can be interactive to allow user rating input.
+ * 
+ * @param {Object} props
+ * @param {number} props.rating - The current rating value (e.g., 3.5).
+ * @param {'xs'|'sm'|'md'|'lg'|'xl'} [props.size='md'] - Size of the stars.
+ * @param {boolean} [props.interactive=false] - Whether the rating can be changed by the user.
+ * @param {function} [props.onChange] - Callback fired when a user selects a new rating.
+ * @param {string} [props.className] - Additional CSS classes for the container.
+ * 
+ * @returns {JSX.Element} A star rating component.
+ */
 const StarRating = ({ 
   rating, 
   size = 'md',

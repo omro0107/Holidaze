@@ -8,6 +8,32 @@ import StarRating from '../../StarRating';
 import Button from '../Button';
 import Modal from '../Modal';
 
+/**
+ * Card component for displaying a venue or item summary.
+ *
+ * This component is used to show a card with an image, title, description, price,
+ * location, rating, and meta information. It also handles owner-specific actions
+ * like editing and deleting a venue.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Card
+ *     id="123"
+ *     title="Beachfront Villa"
+ *     description="A beautiful place to relax"
+ *     media={[{ url: 'villa.jpg', alt: 'Villa' }]}
+ *     price={200}
+ *     rating={4.5}
+ *     location="Malibu"
+ *     meta={<Tag label="Popular" />}
+ *     actions={<Button>Book</Button>}
+ *     href="/venues/123"
+ *     owner={{ name: 'John Doe' }}
+ *   />
+ * )
+ */
+
 const Card = ({
   id,
   title,
@@ -27,8 +53,17 @@ const Card = ({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Check if current user is the owner and a venue manager
   const isOwner = user?.venueManager && owner?.name === user.name;
 
+    /**
+   * Handles venue deletion through API and redirects on success.
+   * Shows a modal for confirmation.
+   *
+   * @async
+   * @function
+   * @returns {Promise<void>}
+   */
   const handleDelete = async () => {
     try {
       setLoading(true);
@@ -46,6 +81,10 @@ const Card = ({
     }
   };
 
+  
+  /**
+   * Wrapper for either clickable card (`<Link>`) or static div.
+   */
   const CardWrapper = ({ children }) => {
     if (href) {
       return (

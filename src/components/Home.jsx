@@ -7,16 +7,42 @@ import { venueService } from '../API';
 import { useAuth } from '../hooks/useAuth';
 import HeroSection from './HeroSection';
 
+/**
+ * Home component displays the main landing page including
+ * a hero section, top-rated venues, promotional content,
+ * and feature highlights.
+ *
+ * It fetches and displays a selection of highly rated venues,
+ * shows marketing content encouraging users to share their venues,
+ * and explains key features of the platform.
+ *
+ * @component
+ * @returns {JSX.Element} The Home page layout and content
+ */
 const Home = () => {
+  /**
+   * State holding the top venues to be displayed.
+   * @type {[Array<Object>, Function]}
+   */
   const [topVenues, setTopVenues] = useState([]);
+
+  /**
+   * Loading state while fetching venues.
+   * @type {[boolean, Function]}
+   */
   const [loading, setLoading] = useState(true);
+
   const { user } = useAuth();
 
+    /**
+   * Fetch top venues from the API, filter to only those
+   * with 5-star rating, shuffle randomly, and take the first 3.
+   * This runs once on component mount.
+   */
   useEffect(() => {
     const fetchTopVenues = async () => {
       try {
         const allVenues = await venueService.getAll();
-        console.log('venueService.getAll response:', allVenues);
         const venuesData = allVenues || [];
         const fiveStarVenues = venuesData
           .filter(venue => venue.rating === 5)
@@ -33,6 +59,11 @@ const Home = () => {
     fetchTopVenues();
   }, []);
 
+  /**
+   * Feature highlights displayed in the How It Works section.
+   * Each feature has a name, description, and icon component.
+   * @type {Array<{name: string, description: string, icon: React.ComponentType}>}
+   */
   const features = [
     {
       name: 'Search Venues',

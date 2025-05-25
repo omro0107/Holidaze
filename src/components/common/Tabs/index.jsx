@@ -1,6 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * Tabs component for switching between views or content sections.
+ *
+ * Renders a horizontal list of tab buttons. Highlights the active tab and 
+ * calls `onTabChange` when a different tab is selected.
+ *
+ * @component
+ * @example
+ * const tabItems = [
+ *   { id: 'details', label: 'Details' },
+ *   { id: 'reviews', label: 'Reviews' },
+ *   { id: 'booking', label: 'Booking' },
+ * ];
+ *
+ * <Tabs 
+ *   tabs={tabItems} 
+ *   activeTab="details" 
+ *   onTabChange={(id) => setActiveTab(id)} 
+ * />
+ *
+ * @param {Object} props
+ * @param {Array<{id: string, label: string}>} props.tabs - List of tab objects with unique `id` and display `label`.
+ * @param {string} props.activeTab - The ID of the currently active tab.
+ * @param {function} props.onTabChange - Callback when a tab is clicked. Receives the `id` of the selected tab.
+ */
 const Tabs = ({ tabs, activeTab, onTabChange }) => {
   return (
     <div className="border-b border-gray-200">

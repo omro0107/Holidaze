@@ -1,6 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
+/**
+ * Footer component displaying site navigation links and social media icons.
+ *
+ * Contains two navigation sections:
+ * - Main links (e.g. Home, Venues, About, etc.)
+ * - Social links with custom SVG icons (Facebook, Instagram)
+ *
+ * Also includes author credit and current year copyright.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Footer />
+ * )
+ */
 const Footer = () => {
   const navigation = {
     main: [

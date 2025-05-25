@@ -1,6 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * Loading spinner component with optional fullscreen overlay and text.
+ *
+ * @component
+ * @example
+ * <Loading size="lg" color="gray" text="Fetching data..." />
+ *
+ * @param {Object} props
+ * @param {'xs'|'sm'|'md'|'lg'|'xl'} [props.size='md'] - Size of the spinner and text
+ * @param {'primary'|'white'|'gray'|'success'|'error'} [props.color='primary'] - Color theme for spinner and text
+ * @param {string} [props.className] - Additional custom classNames for container
+ * @param {boolean} [props.fullScreen=false] - Renders the spinner centered on a semi-transparent fullscreen overlay
+ * @param {string} [props.text='Loading...'] - Optional loading message shown under the spinner
+ */
 const Loading = ({ 
   size = 'md',
   color = 'primary',

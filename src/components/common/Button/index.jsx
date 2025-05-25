@@ -1,7 +1,31 @@
+/**
+ * @fileoverview Reusable Button component supporting multiple styles, sizes,
+ * loading state, and rendering as a <button>, <a>, or <Link>.
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+/**
+ * A flexible button component that supports variants, sizes, loading state,
+ * routing with `react-router-dom`, and standard button/link behavior.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {React.ReactNode} props.children - Button content.
+ * @param {'primary'|'secondary'|'outline'|'danger'|'success'} [props.variant='primary'] - Visual style of the button.
+ * @param {'xs'|'sm'|'md'|'lg'|'xl'} [props.size='md'] - Size of the button.
+ * @param {'button'|'submit'|'reset'} [props.type='button'] - Type attribute (only when rendered as <button>).
+ * @param {boolean} [props.fullWidth=false] - Whether the button should span full width.
+ * @param {boolean} [props.disabled=false] - Whether the button is disabled.
+ * @param {boolean} [props.loading=false] - Whether the button is in loading state (disables interaction).
+ * @param {string} [props.href] - If provided, renders the button as an anchor tag.
+ * @param {string} [props.to] - If provided, renders the button as a React Router <Link>.
+ * @param {function} [props.onClick] - Click event handler.
+ * @param {string} [props.className] - Additional custom CSS classes.
+ * @returns {JSX.Element} Rendered button element.
+ */
 const Button = ({
   children,
   variant = 'primary',

@@ -6,6 +6,34 @@ import { parseISO, isWithinInterval, differenceInDays } from 'date-fns';
 import { useAuth } from '../../../../hooks/useAuth';
 import { bookingService } from '../../../../API';
 
+/**
+ * VenueSidebar displays the booking sidebar on the venue page,
+ * including price, availability calendar, guest selection, and booking button.
+ * Handles booking logic, date validation, and UI states.
+ *
+ * @param {Object} props
+ * @param {number} props.price - Price per night for the venue.
+ * @param {Object} props.owner - Owner information of the venue.
+ * @param {string} [props.owner.name] - Name of the venue owner.
+ * @param {string} [props.owner.email] - Email of the venue owner.
+ * @param {string} [props.owner.bio] - Bio of the venue owner.
+ * @param {Object} [props.owner.avatar] - Avatar object with URL.
+ * @param {string} [props.owner.avatar.url] - URL of the owner's avatar image.
+ * @param {Array<Object>} [props.bookings] - Array of existing bookings for the venue.
+ * @param {string} props.bookings[].dateFrom - Booking start date in ISO string format.
+ * @param {string} props.bookings[].dateTo - Booking end date in ISO string format.
+ * @param {Object} props.selectedDates - Selected date range by user for booking.
+ * @param {Date} props.selectedDates.from - Check-in date.
+ * @param {Date} props.selectedDates.to - Check-out date.
+ * @param {Function} props.onSelectDates - Callback to update selected dates.
+ * @param {string} props.venueId - Unique ID of the venue.
+ * @param {string} props.venueName - Name of the venue.
+ * @param {string} [props.venueImage] - Image URL of the venue.
+ * @param {number} props.maxGuests - Maximum number of guests allowed.
+ * @param {Function} [props.onBookingSuccess] - Optional callback triggered after a successful booking.
+ *
+ * @returns {JSX.Element} Booking sidebar component with calendar, guest selector, and booking button.
+ */
 const VenueSidebar = ({ 
   price, 
   owner, 
@@ -35,8 +63,14 @@ const VenueSidebar = ({
       totalPrice
     };
   }, [selectedDates, price]);
-
-  // Check if selected dates overlap with existing bookings
+  
+  /**
+   * Checks if the selected date range overlaps with existing bookings.
+   * @param {Date} selectedFrom - Selected check-in date.
+   * @param {Date} selectedTo - Selected check-out date.
+   * @param {Array<Object>} existingBookings - List of existing bookings.
+   * @returns {boolean} True if overlap exists, false otherwise.
+   */
   const hasDateOverlap = (selectedFrom, selectedTo, existingBookings) => {
     return existingBookings.some(booking => {
       const bookingFrom = parseISO(booking.dateFrom);
@@ -50,6 +84,10 @@ const VenueSidebar = ({
     });
   };
 
+  /**
+   * Handles booking creation by validating dates, checking for overlaps,
+   * and calling the booking service API.
+   */
   const handleBooking = async () => {
     setError('');
     setLoading(true);

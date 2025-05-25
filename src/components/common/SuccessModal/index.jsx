@@ -11,6 +11,36 @@ import {
   ClockIcon
 } from '@heroicons/react/24/outline';
 
+/**
+ * Displays a success modal with confirmation details after a successful booking.
+ *
+ * Includes venue name, dates, number of nights, guests, total price,
+ * and an image if available.
+ *
+ * @component
+ * @example
+ * const booking = {
+ *   venueImage: "https://example.com/image.jpg",
+ *   venueName: "Seaside Villa",
+ *   dateFrom: new Date("2025-06-01"),
+ *   dateTo: new Date("2025-06-05"),
+ *   guests: 2,
+ *   totalPrice: 500
+ * };
+ * 
+ * <SuccessModal isOpen={true} onClose={() => {}} bookingDetails={booking} />
+ *
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Whether the modal is visible
+ * @param {function} props.onClose - Function to close the modal
+ * @param {Object} props.bookingDetails - The booking information to display
+ * @param {string} [props.bookingDetails.venueImage] - Optional image of the venue
+ * @param {string} props.bookingDetails.venueName - Name of the booked venue
+ * @param {Date} props.bookingDetails.dateFrom - Start date of the booking
+ * @param {Date} props.bookingDetails.dateTo - End date of the booking
+ * @param {number} props.bookingDetails.guests - Number of guests
+ * @param {number} props.bookingDetails.totalPrice - Total price of the booking
+ */
 const SuccessModal = ({ isOpen, onClose, bookingDetails }) => {
   if (!bookingDetails) return null;
 

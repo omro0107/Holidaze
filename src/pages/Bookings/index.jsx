@@ -13,6 +13,19 @@ import {
   CurrencyDollarIcon,
 } from '@heroicons/react/24/outline';
 
+/**
+ * Bookings component displays upcoming and past bookings for the user.
+ * Venue managers see bookings on their venues; regular users see their personal bookings.
+ *
+ * Features:
+ * - Fetch bookings from API on mount.
+ * - Show loading and error states.
+ * - Display upcoming and past bookings.
+ * - Allow regular users to cancel upcoming bookings with confirmation modal.
+ * 
+ * @component
+ * @returns {JSX.Element} Rendered bookings UI.
+ */
 const Bookings = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -23,6 +36,13 @@ const Bookings = () => {
   const [error, setError] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
 
+  /**
+   * Fetch bookings data from API depending on user role.
+   * Venue managers get all venue bookings.
+   * Regular users get their own bookings.
+   *
+   * This effect runs on component mount or when user/get changes.
+   */
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -43,6 +63,15 @@ const Bookings = () => {
     fetchBookings();
   }, [user, get]);
 
+  
+  /**
+   * Handle cancellation of a selected booking.
+   * Calls API to delete booking and updates state on success.
+   *
+   * @async
+   * @function
+   * @returns {Promise<void>}
+   */
   const handleCancelBooking = async () => {
     if (!selectedBooking) return;
 
@@ -59,6 +88,11 @@ const Bookings = () => {
     }
   };
 
+  /**
+   * Open the cancellation confirmation modal and set the booking to cancel.
+   *
+   * @param {Object} booking - The booking object selected for cancellation.
+   */
   const openCancelModal = (booking) => {
     setSelectedBooking(booking);
     setShowCancelModal(true);
