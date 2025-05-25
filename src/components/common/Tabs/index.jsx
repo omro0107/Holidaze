@@ -28,12 +28,16 @@ import PropTypes from 'prop-types';
  */
 const Tabs = ({ tabs, activeTab, onTabChange }) => {
   return (
-    <div className="border-b border-gray-200">
+    <div className="border-b border-gray-200" role="tablist">
       <nav className="-mb-px flex space-x-8" aria-label="Tabs">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            aria-controls={`${tab.id}-panel`}
+            id={`${tab.id}-tab`}
             className={`
               whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm
               ${

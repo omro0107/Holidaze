@@ -17,30 +17,30 @@ import { WifiIcon, TruckIcon, HomeIcon, HeartIcon } from '@heroicons/react/24/ou
  */
 const VenueAmenities = ({ meta }) => {
   return (
-    <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-4">What this place offers</h2>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="mb-8" role="region" aria-labelledby="amenities-heading">
+      <h2 id="amenities-heading" className="text-xl font-semibold mb-4">What this place offers</h2>
+      <div className="grid grid-cols-2 gap-4" role="list" aria-label="Available amenities">
         {meta.wifi && (
-          <div className="flex items-center">
-            <WifiIcon className="h-5 w-5 mr-2 text-[#70533A]" />
+          <div className="flex items-center" role="listitem">
+            <WifiIcon className="h-5 w-5 mr-2 text-text" aria-hidden="true" />
             <span>Wifi</span>
           </div>
         )}
         {meta.parking && (
-          <div className="flex items-center">
-            <TruckIcon className="h-5 w-5 mr-2 text-[#70533A]" />
+          <div className="flex items-center" role="listitem">
+            <TruckIcon className="h-5 w-5 mr-2 text-text" aria-hidden="true" />
             <span>Parking</span>
           </div>
         )}
         {meta.breakfast && (
-          <div className="flex items-center">
-            <HomeIcon className="h-5 w-5 mr-2 text-[#70533A]" />
+          <div className="flex items-center" role="listitem">
+            <HomeIcon className="h-5 w-5 mr-2 text-text" aria-hidden="true" />
             <span>Breakfast</span>
           </div>
         )}
         {meta.pets && (
-          <div className="flex items-center">
-            <HeartIcon className="h-5 w-5 mr-2 text-[#70533A]" />
+          <div className="flex items-center" role="listitem">
+            <HeartIcon className="h-5 w-5 mr-2 text-text" aria-hidden="true" />
             <span>Pets allowed</span>
           </div>
         )}

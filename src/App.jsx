@@ -26,6 +26,8 @@ import Bookings from './pages/Bookings';
 import NotFound from './components/NotFound';
 import Contact from './pages/Contact';
 import About from './pages/About';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 
 // Components
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -71,6 +73,8 @@ const router = createBrowserRouter(
             <Route path={ROUTES.VENUE_DETAILS} element={<Venue />} />
             <Route path={ROUTES.CONTACT} element={<Contact />} />
             <Route path={ROUTES.ABOUT} element={<About />} />
+            <Route path={ROUTES.TERMS} element={<Terms />} />
+            <Route path={ROUTES.PRIVACY} element={<Privacy />} />
         
         {/* Protected Routes */}
         <Route

@@ -15,25 +15,33 @@ import PropTypes from 'prop-types';
  */
 const ImageGallery = ({ images, currentIndex, onNext, onPrevious }) => {
   return (
-    <div className="relative aspect-w-16 aspect-h-9 mb-8 bg-gray-100 rounded-lg overflow-hidden">
+    <div 
+      className="relative aspect-w-16 aspect-h-9 mb-8 bg-gray-100 rounded-lg overflow-hidden"
+      role="region"
+      aria-label="Image gallery"
+    >
       {images.length > 0 && (
         <>
           <img
             src={images[currentIndex].url}
             alt={images[currentIndex].alt}
             className="object-cover w-full h-full"
+            aria-current="true"
+            role="img"
           />
           {images.length > 1 && (
             <div className="absolute inset-0 flex items-center justify-between p-4">
               <button
                 onClick={onPrevious}
                 className="p-2 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-75"
+                aria-label="Previous image"
               >
                 ←
               </button>
               <button
                 onClick={onNext}
                 className="p-2 rounded-full bg-black bg-opacity-50 text-white hover:bg-opacity-75"
+                aria-label="Next image"
               >
                 →
               </button>

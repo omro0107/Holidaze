@@ -68,7 +68,10 @@ const SuccessModal = ({ isOpen, onClose, bookingDetails }) => {
       closeOnOverlayClick={true}
     >
       <div className="p-6 text-center">
-        <CheckCircleIcon className="mx-auto h-12 w-12 text-green-500" />
+        <CheckCircleIcon 
+          className="mx-auto h-12 w-12 text-green-500" 
+          aria-hidden="true"
+        />
         <h2 className="mt-4 text-xl font-semibold text-gray-900">
           Your booking is confirmed!
         </h2>
@@ -85,26 +88,26 @@ const SuccessModal = ({ isOpen, onClose, bookingDetails }) => {
             </div>
           )}
 
-          <div className="w-full max-w-md text-left space-y-3 bg-gray-50 p-4 rounded-lg">
-            <div className="flex items-center space-x-3">
-              <HomeIcon className="h-5 w-5 text-gray-500" />
-              <span className="font-medium">{venueName}</span>
+          <div className="w-full max-w-md text-left space-y-3 bg-gray-50 p-4 rounded-lg" role="list" aria-label="Booking details">
+            <div className="flex items-center space-x-3" role="listitem">
+              <HomeIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              <span className="font-medium" aria-label="Venue name">{venueName}</span>
             </div>
-            <div className="flex items-center space-x-3">
-              <CalendarIcon className="h-5 w-5 text-gray-500" />
-              <span>{formatDate(dateFrom)} - {formatDate(dateTo)}</span>
+            <div className="flex items-center space-x-3" role="listitem">
+              <CalendarIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              <span aria-label="Booking dates">{formatDate(dateFrom)} - {formatDate(dateTo)}</span>
             </div>
-            <div className="flex items-center space-x-3">
-              <ClockIcon className="h-5 w-5 text-gray-500" />
-              <span>{nights} {nights === 1 ? 'night' : 'nights'}</span>
+            <div className="flex items-center space-x-3" role="listitem">
+              <ClockIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              <span aria-label="Duration of stay">{nights} {nights === 1 ? 'night' : 'nights'}</span>
             </div>
-            <div className="flex items-center space-x-3">
-              <UserGroupIcon className="h-5 w-5 text-gray-500" />
-              <span>{guests} {guests === 1 ? 'guest' : 'guests'}</span>
+            <div className="flex items-center space-x-3" role="listitem">
+              <UserGroupIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              <span aria-label="Number of guests">{guests} {guests === 1 ? 'guest' : 'guests'}</span>
             </div>
-            <div className="flex items-center space-x-3 font-medium">
-              <CurrencyDollarIcon className="h-5 w-5 text-gray-500" />
-              <span>Total price: ${totalPrice}</span>
+            <div className="flex items-center space-x-3 font-medium" role="listitem">
+              <CurrencyDollarIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              <span aria-label="Total price">Total price: ${totalPrice}</span>
             </div>
           </div>
         </div>

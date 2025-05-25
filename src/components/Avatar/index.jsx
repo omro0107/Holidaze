@@ -65,8 +65,15 @@ const Avatar = ({
     <div 
       className={containerClasses}
       onClick={onClick}
-      role={onClick ? 'button' : undefined}
+      role={onClick ? 'button' : 'img'}
       tabIndex={onClick ? 0 : undefined}
+      aria-label={`${alt || 'Profile picture'}${status ? `, Status: ${status}` : ''}`}
+      onKeyDown={(e) => {
+        if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
     >
       <img
         src={src || placeholderAvatar}
@@ -84,6 +91,8 @@ const Avatar = ({
             absolute bottom-0 right-0 block rounded-full ring-2 ring-white
             ${statusColors[status]} ${statusSize[size]}
           `}
+          role="status"
+          aria-label={`Status: ${status}`}
         />
       )}
     </div>

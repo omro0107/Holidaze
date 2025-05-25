@@ -47,13 +47,19 @@ const Loading = ({
   };
 
   const Spinner = () => (
-    <div className={`inline-flex flex-col items-center ${className}`}>
+    <div 
+      className={`inline-flex flex-col items-center ${className}`}
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
       <svg
         className={`animate-spin ${sizes[size]} ${colors[color]}`}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        aria-hidden="true"
+        role="progressbar"
+        aria-label="Loading"
       >
         <circle
           className="opacity-25"
@@ -75,7 +81,7 @@ const Loading = ({
             mt-2 ${textSizes[size]} ${colors[color]}
             animate-pulse
           `}
-          role="status"
+          aria-live="polite"
         >
           {text}
         </span>
@@ -85,7 +91,12 @@ const Loading = ({
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+      <div 
+        className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Loading overlay"
+      >
         <Spinner />
       </div>
     );

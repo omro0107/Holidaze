@@ -75,7 +75,9 @@ const SearchBar = ({
   return (
     <form 
       onSubmit={handleSubmit}
-      className={`flex items-center gap-2 ${className}`}
+      className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-2 ${className}`}
+      role="search"
+      aria-label="Search venues"
     >
       <div className="relative flex-grow">
         <Input
@@ -84,10 +86,11 @@ const SearchBar = ({
           value={searchTerm}
           onChange={handleChange}
           placeholder={placeholder}
-          className="w-full pr-10"
+          className="w-full pr-10 text-sm sm:text-base h-10 sm:h-auto"
+          aria-label={placeholder}
           leftIcon={
             <MagnifyingGlassIcon 
-              className="h-5 w-5 text-gray-400"
+              className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400"
               aria-hidden="true"
             />
           }
@@ -98,8 +101,9 @@ const SearchBar = ({
         <Button
           type="submit"
           variant="primary"
-          className="whitespace-nowrap"
+          className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-2.5 px-4"
           disabled={searchTerm.length < minLength}
+          aria-label="Search venues"
         >
           Search
         </Button>
@@ -109,13 +113,21 @@ const SearchBar = ({
 };
 
 SearchBar.propTypes = {
+  /** Custom function to handle search input */
   onSearch: PropTypes.func,
+  /** Default search input value */
   initialValue: PropTypes.string,
+  /** Placeholder text for the input */
   placeholder: PropTypes.string,
+  /** Custom className for styling the outer container */
   className: PropTypes.string,
+  /** Whether to show the "Search" button */
   showButton: PropTypes.bool,
+  /** Whether to search as the user types (with debounce) */
   autoSearch: PropTypes.bool,
+  /** Minimum input length required before triggering search */
   minLength: PropTypes.number,
+  /** Milliseconds to wait before triggering auto search */
   debounceMs: PropTypes.number,
 };
 

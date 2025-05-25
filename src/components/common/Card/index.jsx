@@ -73,7 +73,6 @@ const Card = ({
         window.location.href = '/profile';
       }
     } catch (error) {
-      console.error('Failed to delete venue:', error);
       alert('Failed to delete venue. Please try again.');
     } finally {
       setLoading(false);
@@ -95,6 +94,7 @@ const Card = ({
             hover:shadow-lg transition-shadow duration-200
             ${className}
           `}
+          aria-label={`View details for ${title}`}
         >
           {children}
         </Link>
@@ -116,44 +116,52 @@ const Card = ({
   return (
     <CardWrapper>
       {/* Image */}
-      <div className="relative aspect-w-16 aspect-h-9">
-        <img
-          src={media?.[0]?.url || '/images/placeholder-venue.png'}
-          alt={media?.[0]?.alt || title}
-          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-200"
-        />
+      <div className="relative aspect-w-16 aspect-h-9" role="img" aria-label={media?.[0]?.alt || `Image of ${title}`}>
+          <img
+            src={media?.[0]?.url || '/images/placeholder-venue.png'}
+            alt={media?.[0]?.alt || `Image of ${title}`}
+            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-200"
+          />
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-text group-hover:text-primary-600">
+      <div className="p-3 sm:p-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base sm:text-lg font-semibold text-text group-hover:text-primary-600 truncate" id={`venue-title-${id}`}>
               {title}
             </h3>
             {location && (
-              <p className="mt-1 flex items-center text-sm text-secondary-500">
-                <MapPinIcon className="h-4 w-4 mr-1 flex-shrink-0" />
-                {location}
+              <p className="mt-0.5 sm:mt-1 flex items-center text-xs sm:text-sm text-secondary-500" aria-label={`Location: ${location}`}>
+                <MapPinIcon 
+                  className="h-3 w-3 sm:h-4 sm:w-4 mr-1 flex-shrink-0" 
+                  aria-hidden="true"
+                />
+                <span className="truncate">{location}</span>
               </p>
             )}
           </div>
           {rating !== undefined && (
-            <StarRating rating={rating} size="sm" />
+            <div className="flex-shrink-0" aria-label={`Rating: ${rating} stars`}>
+              <StarRating rating={rating} size="sm" aria-hidden="true" />
+            </div>
           )}
         </div>
 
         {description && (
-          <p className="mt-2 text-sm text-secondary-600 line-clamp-2">
+          <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-secondary-600 line-clamp-2" aria-label={`Description: ${description}`}>
             {description}
           </p>
         )}
 
         {/* Meta Information */}
-        <div className="mt-4 flex items-center space-x-4">
+          <div className="mt-3 sm:mt-4 flex items-center justify-between" role="group" aria-label="Venue details">
           {price && (
             <div className="flex items-center text-sm text-secondary-500">
-              <span className="font-semibold text-primary-600 whitespace-nowrap">
+              <span 
+                className="font-semibold text-primary-600 whitespace-nowrap"
+                aria-label={`Price: ${price} dollars per night`}
+              >
                 ${price}
                 <span className="text-xs text-secondary-600">/night</span>
               </span>
@@ -163,31 +171,37 @@ const Card = ({
         </div>
 
         {/* Actions */}
-        <div className="mt-4 flex items-center space-x-2">
-          {actions}
-          {isOwner && (
-            <div className="flex gap-2 mt-2">
-              <Button
-                variant="secondary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate(`/venues/${id}/edit`);
-                }}
-              >
-                Edit
-              </Button>
-              <Button
-                variant="danger"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowDeleteModal(true);
-                }}
-              >
-                Delete
-              </Button>
-            </div>
-          )}
-        </div>
+        {(actions || isOwner) && (
+          <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-2" role="group" aria-label="Venue actions">
+            {actions}
+            {isOwner && (
+              <div className="flex gap-2 w-full sm:w-auto" role="group" aria-label="Owner actions">
+                <Button
+                  variant="secondary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/venues/${id}/edit`);
+                  }}
+                  className="flex-1 sm:flex-initial text-sm py-1.5"
+                  aria-label={`Edit ${title}`}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowDeleteModal(true);
+                  }}
+                  className="flex-1 sm:flex-initial text-sm py-1.5"
+                  aria-label={`Delete ${title}`}
+                >
+                  Delete
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Delete Confirmation Modal */}
         <Modal
@@ -195,13 +209,16 @@ const Card = ({
           onClose={() => setShowDeleteModal(false)}
           title="Delete Venue"
         >
-          <div className="p-6">
-            <p className="mb-4">Are you sure you want to delete this venue? This action cannot be undone.</p>
-            <div className="flex justify-end space-x-3">
+          <div className="p-4 sm:p-6">
+            <p className="mb-4 text-sm sm:text-base">
+              Are you sure you want to delete this venue? This action cannot be undone.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
               <Button
                 type="button"
                 variant="secondary"
                 onClick={() => setShowDeleteModal(false)}
+                className="w-full sm:w-auto"
               >
                 Cancel
               </Button>
@@ -210,6 +227,7 @@ const Card = ({
                 variant="danger"
                 onClick={handleDelete}
                 disabled={loading}
+                className="w-full sm:w-auto"
               >
                 {loading ? 'Deleting...' : 'Delete'}
               </Button>

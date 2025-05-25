@@ -79,6 +79,8 @@ const Button = ({
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
+        role="status"
+        aria-label="Loading"
       >
         <circle
           className="opacity-25"
@@ -102,6 +104,7 @@ const Button = ({
       <Link
         to={to}
         className={combinedClassName}
+        aria-disabled={disabled || loading}
         {...props}
       >
         {children}
@@ -115,6 +118,7 @@ const Button = ({
       <a
         href={href}
         className={combinedClassName}
+        aria-disabled={disabled || loading}
         {...props}
       >
         {children}
@@ -129,6 +133,7 @@ const Button = ({
       disabled={disabled || loading}
       onClick={onClick}
       className={combinedClassName}
+      aria-busy={loading}
       {...props}
     >
       {children}

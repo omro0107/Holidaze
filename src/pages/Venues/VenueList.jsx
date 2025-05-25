@@ -102,7 +102,6 @@ const VenueList = () => {
         
         setVenues(sortedVenues);
       } catch (error) {
-        console.error('Failed to fetch venues:', error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -160,23 +159,23 @@ const VenueList = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <h1 className="text-3xl font-bold text-[#70533A]">Search stays that feel like you</h1>
+    <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4 mb-4 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-text">Search Stays That Feel Like You</h1>
         <div className="w-full md:w-96">
           <SearchBar
             onSearch={handleSearch}
-            placeholder="Search by venue name, city or country..."
+            placeholder="Search venues..."
             initialValue={filters.search}
           />
         </div>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <Button
           onClick={() => setIsFilterModalOpen(true)}
           variant="secondary"
-          className="flex items-center gap-2"
+          className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base w-full sm:w-auto justify-center"
         >
           <FunnelIcon className="h-5 w-5" />
           Filters
@@ -196,23 +195,23 @@ const VenueList = () => {
       />
 
       {loading ? (
-        <div className="flex justify-center py-12">
+        <div className="flex justify-center py-8 sm:py-12">
           <Loading />
         </div>
       ) : error ? (
-        <div className="text-center py-12">
+        <div className="text-center py-8 sm:py-12">
           <p className="text-red-600">{error}</p>
         </div>
       ) : venues.length === 0 ? (
-        <div className="text-center py-12">
-          <MagnifyingGlassIcon className="mx-auto h-12 w-12 text-primary-400" />
+        <div className="text-center py-8 sm:py-12">
+          <MagnifyingGlassIcon className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-primary-400" />
           <h3 className="mt-2 text-sm font-medium text-text-900">No venues found</h3>
           <p className="mt-1 text-sm text-primary-500">
             Try adjusting your search or filter criteria
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {venues.map((venue) => (
             <Card
               key={venue.id}

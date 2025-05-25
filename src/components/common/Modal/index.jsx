@@ -63,6 +63,8 @@ const Modal = ({
         as="div"
         className="fixed z-50 inset-0 overflow-y-auto"
         onClose={closeOnOverlayClick ? handleClose : () => {}}
+        aria-modal="true"
+        aria-describedby={`${title ? 'modal-title' : ''}`}
       >
         <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -98,7 +100,7 @@ const Modal = ({
               className={`
                 inline-block align-bottom bg-white rounded-lg text-left
                 overflow-hidden shadow-xl transform transition-all
-                sm:my-8 sm:align-middle ${sizes[size]} w-full
+                sm:my-8 sm:align-middle ${sizes[size]} w-full max-h[90vh] overflow-y-auto
                 ${className}
               `}
             >
@@ -109,16 +111,18 @@ const Modal = ({
                     <Dialog.Title
                       as="h3"
                       className="text-lg font-medium text-[#70533A]"
+                      id="modal-title"
                     >
                       {title}
                     </Dialog.Title>
                   )}
                   {showClose && (
-                    <button
-                      type="button"
-                      className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      onClick={handleClose}
-                    >
+                      <button
+                        type="button"
+                        className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        onClick={handleClose}
+                        aria-label="Close modal"
+                      >
                       <span className="sr-only">Close</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                     </button>

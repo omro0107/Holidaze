@@ -86,14 +86,14 @@ const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} showClose={false}>
-      <div className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Filters</h2>
+      <div className="p-4 sm:p-6 w-full" role="dialog" aria-labelledby="filter-heading">
+        <h2 id="filter-heading" className="text-xl font-semibold text-gray-900 mb-6">Filters</h2>
 
         {/* Price Range */}
-        <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-900 mb-2">Price Range</h3>
+        <div className="mb-6" role="group" aria-labelledby="price-range-heading">
+          <h3 id="price-range-heading" className="text-sm font-medium text-gray-900 mb-2">Price Range</h3>
           <div className="flex gap-4">
-            <div>
+            <div className="w-full">
               <label htmlFor="minPrice" className="sr-only">Minimum Price</label>
               <input
                 type="number"
@@ -105,7 +105,7 @@ const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
               />
             </div>
-            <div>
+            <div className="w-full">
               <label htmlFor="maxPrice" className="sr-only">Maximum Price</label>
               <input
                 type="number"
@@ -121,8 +121,8 @@ const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
         </div>
 
         {/* Rating */}
-        <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-900 mb-2">Minimum Rating</h3>
+        <div className="mb-6" role="group" aria-labelledby="rating-heading">
+          <h3 id="rating-heading" className="text-sm font-medium text-gray-900 mb-2">Minimum Rating</h3>
           <StarRating
             rating={filters.rating}
             onChange={(rating) => setFilters(prev => ({ ...prev, rating }))}
@@ -131,9 +131,9 @@ const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
         </div>
 
         {/* Amenities */}
-        <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-900 mb-2">Amenities</h3>
-          <div className="space-y-3">
+        <div className="mb-6" role="group" aria-labelledby="amenities-heading">
+          <h3 id="amenities-heading" className="text-sm font-medium text-gray-900 mb-2">Amenities</h3>
+          <div className="space-y-3" role="group" aria-label="Amenity options">
             {Object.entries({
               wifi: 'WiFi',
               parking: 'Parking',
@@ -154,7 +154,7 @@ const FilterModal = ({ isOpen, onClose, onApply, initialFilters = {} }) => {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3" role="group" aria-label="Filter actions">
           <Button onClick={handleApply} variant="primary" className="flex-1">
             Show Results
           </Button>

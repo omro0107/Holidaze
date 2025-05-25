@@ -153,14 +153,14 @@ const Profile = () => {
   const tabs = [
     { id: 'venues', label: 'My Venues' },
     { id: 'bookings', label: 'My Bookings' },
-    { id: 'venueBookings', label: 'Venue Reservations' },
+    { id: 'venueBookings', label: 'Reservations' },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8">
       {/* Profile Header */}
       <div className="bg-white shadow rounded-lg p-6 mb-8">
-        <div className="flex items-center space-x-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
           <div className="relative">
             <Avatar
               key={avatarKey}
@@ -188,10 +188,10 @@ const Profile = () => {
               </svg>
             </button>
           </div>
-          <div>
-            <h1 className="text-3xl font-bold text-text">{user.name}</h1>
-            <p className="text-secondary">{user.email}</p>
-            <p className="text-sm font-medium mt-1">
+          <div className="text-center sm:text-left">
+            <h1 className="text-2xl sm:text-3xl font-bold text-text">{user.name}</h1>
+            <p className="text-secondary text-sm sm:text-base">{user.email}</p>
+            <p className="text-xs sm:text-sm font-medium mt-1">
               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full ${
                 user.venueManager 
                   ? 'bg-blue-100 text-blue-800' 
@@ -207,18 +207,21 @@ const Profile = () => {
       <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
       {activeTab === 'venues' && user.venueManager && (
-        <div className="mt-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-text">My Venues</h2>
-            <Button onClick={() => navigate('/venues/create')}>
+        <div className="mt-6 sm:mt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-text">My Venues</h2>
+            <Button 
+              onClick={() => navigate('/venues/create')}
+              className="w-full sm:w-auto"
+            >
               Create New Venue
             </Button>
           </div>
           
           {venues.length === 0 ? (
-            <p className="text-gray-500">You haven't created any venues yet.</p>
+            <p className="text-gray-500 text-sm sm:text-base">You haven't created any venues yet.</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {venues.map((venue) => (
                 <Card
                   key={venue.id}
@@ -240,12 +243,12 @@ const Profile = () => {
       )}
 
       {activeTab === 'bookings' && (
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-text mb-4">My Bookings</h2>
+        <div className="mt-6 sm:mt-8">
+          <h2 className="text-lg sm:text-xl font-semibold text-text mb-4">My Bookings</h2>
           {bookings.length === 0 ? (
-            <p className="text-gray-500">You don't have any bookings yet.</p>
+            <p className="text-gray-500 text-sm sm:text-base">You don't have any bookings yet.</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {bookings.map((booking) => (
                 <Card
                   key={booking.id}
@@ -276,73 +279,75 @@ const Profile = () => {
       )}
 
       {activeTab === 'venueBookings' && user.venueManager && (
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-text mb-4">Upcoming Bookings on My Venues</h2>
+        <div className="mt-6 sm:mt-8">
+          <h2 className="text-lg sm:text-xl font-semibold text-text mb-4">Upcoming Bookings on My Venues</h2>
           {venueBookings.length === 0 ? (
-            <p className="text-gray-500">No upcoming bookings on your venues.</p>
+            <p className="text-gray-500 text-sm sm:text-base">No upcoming bookings on your venues.</p>
           ) : (
-            <table className="min-w-full table-auto border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="border border-gray-300 px-4 py-2 text-left">Arrival</th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">Nights</th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">Departure</th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">Guests</th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">Total Price</th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">Status</th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">Venue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {venueBookings.map((booking) => {
-                  const arrivalDate = new Date(booking.dateFrom);
-                  const departureDate = new Date(booking.dateTo);
-                  const nights = Math.round((departureDate - arrivalDate) / (1000 * 60 * 60 * 24));
-                  const totalPrice = booking.venue?.price * nights;
-                  return (
-                    <tr key={booking.id} className="border border-gray-300 hover:bg-gray-50">
-                      <td className="border border-gray-300 px-4 py-2">{arrivalDate.toLocaleDateString()}</td>
-                      <td className="border border-gray-300 px-4 py-2">{nights}</td>
-                      <td className="border border-gray-300 px-4 py-2">{departureDate.toLocaleDateString()}</td>
-                      <td className="border border-gray-300 px-4 py-2">{booking.guests}</td>
-                      <td className="border border-gray-300 px-4 py-2">${totalPrice}</td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {(() => {
-                          const now = new Date();
-                          const arrival = new Date(booking.dateFrom);
-                          const departure = new Date(booking.dateTo);
-                          
-                          let status;
-                          let colorClass;
-                          
-                          if (now < arrival) {
-                            status = 'Upcoming';
-                            colorClass = 'bg-blue-100 text-blue-800';
-                          } else if (now >= arrival && now <= departure) {
-                            status = 'In-house';
-                            colorClass = 'bg-green-100 text-green-800';
-                          } else {
-                            status = 'Checked out';
-                            colorClass = 'bg-gray-100 text-gray-800';
-                          }
-                          
-                          return (
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colorClass}`}>
-                              {status}
-                            </span>
-                          );
-                        })()}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <a href={`/venues/${booking.venue?.id}`} className="text-blue-600 hover:underline">
-                          {booking.venue?.name}
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div className="overflow-x-auto w-full -mx-2 px-2 sm:mx-0 sm:px-0 bg-white shadow-sm rounded-lg">
+              <table className="w-full table-auto border-collapse text-left whitespace-nowrap md:whitespace-normal">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="border border-gray-300 px-3 sm:px-4 py-2 text-left text-xs sm:text-sm">Arrival</th>
+                    <th className="border border-gray-300 px-3 sm:px-4 py-2 text-left text-xs sm:text-sm">Nights</th>
+                    <th className="border border-gray-300 px-3 sm:px-4 py-2 text-left text-xs sm:text-sm hidden md:table-cell">Departure</th>
+                    <th className="border border-gray-300 px-3 sm:px-4 py-2 text-left text-xs sm:text-sm hidden md:table-cell">Guests</th>
+                    <th className="border border-gray-300 px-3 sm:px-4 py-2 text-left text-xs sm:text-sm hidden md:table-cell">Total</th>
+                    <th className="border border-gray-300 px-3 sm:px-4 py-2 text-left text-xs sm:text-sm">Status</th>
+                    <th className="border border-gray-300 px-3 sm:px-4 py-2 text-left text-xs sm:text-sm">Venue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {venueBookings.map((booking) => {
+                    const arrivalDate = new Date(booking.dateFrom);
+                    const departureDate = new Date(booking.dateTo);
+                    const nights = Math.round((departureDate - arrivalDate) / (1000 * 60 * 60 * 24));
+                    const totalPrice = booking.venue?.price * nights;
+                    return (
+                      <tr key={booking.id} className="border border-gray-300 hover:bg-gray-50">
+                        <td className="border border-gray-300 px-3 sm:px-4 py-2 text-xs sm:text-sm">{arrivalDate.toLocaleDateString()}</td>
+                        <td className="border border-gray-300 px-3 sm:px-4 py-2 text-xs sm:text-sm">{nights}</td>
+                        <td className="border border-gray-300 px-3 sm:px-4 py-2 text-xs sm:text-sm hidden md:table-cell">{departureDate.toLocaleDateString()}</td>
+                        <td className="border border-gray-300 px-3 sm:px-4 py-2 text-xs sm:text-sm hidden md:table-cell">{booking.guests}</td>
+                        <td className="border border-gray-300 px-3 sm:px-4 py-2 text-xs sm:text-sm hidden md:table-cell">${totalPrice}</td>
+                        <td className="border border-gray-300 px-3 sm:px-4 py-2 text-xs sm:text-sm">
+                          {(() => {
+                            const now = new Date();
+                            const arrival = new Date(booking.dateFrom);
+                            const departure = new Date(booking.dateTo);
+                            
+                            let status;
+                            let colorClass;
+                            
+                            if (now < arrival) {
+                              status = 'Upcoming';
+                              colorClass = 'bg-blue-100 text-blue-800';
+                            } else if (now >= arrival && now <= departure) {
+                              status = 'In-house';
+                              colorClass = 'bg-green-100 text-green-800';
+                            } else {
+                              status = 'Checked out';
+                              colorClass = 'bg-gray-100 text-gray-800';
+                            }
+                            
+                            return (
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${colorClass}`}>
+                                {status}
+                              </span>
+                            );
+                          })()}
+                        </td>
+                        <td className="border border-gray-300 px-3 sm:px-4 py-2 text-xs sm:text-sm">
+                          <a href={`/venues/${booking.venue?.id}`} className="text-blue-600 hover:underline truncate max-w-[120px] block">
+                            {booking.venue?.name}
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       )}
@@ -378,7 +383,7 @@ const Profile = () => {
                 <img
                   src={avatarUrl}
                   alt="Avatar preview"
-                  className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-gray-200"
                   onError={() => {
                     setError('Invalid image URL');
                   }}
@@ -388,7 +393,7 @@ const Profile = () => {
           )}
         </div>
 
-        <div className="mt-6 flex justify-end space-x-3">
+        <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
           <Button
             variant="secondary"
             onClick={() => {
@@ -396,12 +401,14 @@ const Profile = () => {
               setAvatarUrl('');
               setError(null);
             }}
+            className="w-full sm:w-auto"
           >
             Cancel
           </Button>
           <Button
             onClick={handleUpdateAvatar}
             disabled={loading || !avatarUrl}
+            className="w-full sm:w-auto"
           >
             {loading ? 'Updating...' : 'Update'}
           </Button>
@@ -419,14 +426,14 @@ const Profile = () => {
         title="Cancel Booking"
       >
         <div className="space-y-4">
-          <p className="text-gray-700">
+          <p className="text-gray-700 text-sm sm:text-base">
             Are you sure you want to cancel your booking at{' '}
             <span className="font-semibold">{selectedBooking?.venue?.name}</span>?
           </p>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-red-500 text-xs sm:text-sm">{error}</p>}
         </div>
 
-        <div className="mt-6 flex justify-end space-x-3">
+        <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
           <Button
             variant="secondary"
             onClick={() => {
@@ -434,6 +441,7 @@ const Profile = () => {
               setSelectedBooking(null);
               setError(null);
             }}
+            className="w-full sm:w-auto"
           >
             Keep Booking
           </Button>
@@ -441,6 +449,7 @@ const Profile = () => {
             variant="danger"
             onClick={handleCancelBooking}
             disabled={cancellingBooking}
+            className="w-full sm:w-auto"
           >
             {cancellingBooking ? 'Cancelling...' : 'Yes, Cancel Booking'}
           </Button>

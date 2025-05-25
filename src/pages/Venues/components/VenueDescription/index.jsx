@@ -23,7 +23,7 @@ const VenueDescription = ({
   return (
     <>
       {/* Host Information */}
-      <div className="flex items-center mb-6">
+      <div className="flex items-center mb-6" role="region" aria-label="Host information">
         <div className="flex items-center">
           <img
             src={typeof owner?.avatar === 'string' ? owner.avatar : (owner?.avatar?.url || placeholderProfile)}
@@ -38,14 +38,14 @@ const VenueDescription = ({
       </div>
 
       {/* Description */}
-      <div className="prose max-w-none mb-8 text-[#70533A]">
-        <h2 className="text-xl font-semibold mb-2 text-[#70533A]">About this place</h2>
+      <div className="prose max-w-none mb-8 text-[#70533A]" role="region" aria-labelledby="about-heading">
+        <h2 id="about-heading" className="text-xl font-semibold mb-2 text-[#70533A]">About this place</h2>
         <p>{description}</p>
       </div>
       
       {/* Max Guests */}
-      <div className="flex items-center text-[#70533A] mb-8">
-        <UserGroupIcon className="h-6 w-6 mr-2" />
+      <div className="flex items-center text-[#70533A] mb-8" role="region" aria-label="Guest capacity">
+        <UserGroupIcon className="h-6 w-6 mr-2" aria-hidden="true" />
         <span>Maximum {maxGuests} guests</span>
       </div>
     </>

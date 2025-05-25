@@ -93,7 +93,11 @@ const Calendar = ({
   `;
 
   return (
-    <div className={`p-4 bg-white rounded-lg shadow ${className}`}>
+    <div 
+      className={`p-4 bg-white rounded-lg shadow ${className}`}
+      role="application"
+      aria-label="Date picker calendar"
+    >
       <style>{calendarStyles}</style>
       <DayPicker
         mode={mode}
@@ -132,13 +136,21 @@ const Calendar = ({
           day: defaultStyles.day,
         }}
       />
-      <div className="mt-4 text-sm">
+      <div className="mt-4 text-sm" role="complementary" aria-label="Calendar legend">
         <div className="flex items-center gap-2">
-          <span className="inline-block w-3 h-3 bg-red-100 border border-red-300"></span>
+          <span 
+            className="inline-block w-3 h-3 bg-red-100 border border-red-300"
+            role="img" 
+            aria-label="Booked dates indicator"
+          ></span>
           <span className="text-gray-600">Booked dates</span>
         </div>
         <div className="flex items-center gap-2 mt-1">
-          <span className="inline-block w-3 h-3 bg-primary-600"></span>
+          <span 
+            className="inline-block w-3 h-3 bg-primary-600"
+            role="img" 
+            aria-label="Selected dates indicator"
+          ></span>
           <span className="text-gray-600">Selected dates</span>
         </div>
       </div>

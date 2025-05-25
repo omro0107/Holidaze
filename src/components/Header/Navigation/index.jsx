@@ -92,7 +92,12 @@ const Navigation = () => {
               <div className="hidden sm:flex items-center justify-end w-1/4">
                 {isAuthenticated ? (
                   <Menu as="div" className="ml-3 relative">
-                    <Menu.Button className="flex rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <Menu.Button 
+                      className="flex rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                      aria-label="Open user menu"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
                       <Avatar
                         src={user?.avatar?.url}
                         alt={user?.name}
@@ -108,7 +113,12 @@ const Navigation = () => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                      <Menu.Items 
+                        className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="user-menu"
+                      >
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
@@ -118,6 +128,7 @@ const Navigation = () => {
                                   block px-4 py-2 text-sm text-gray-700
                                   ${active ? 'bg-gray-100' : ''}
                                 `}
+                                role="menuitem"
                               >
                                 {item.name}
                               </Link>
@@ -132,6 +143,7 @@ const Navigation = () => {
                                 block w-full text-left px-4 py-2 text-sm text-gray-700
                                 ${active ? 'bg-gray-100' : ''}
                               `}
+                              role="menuitem"
                             >
                               Sign out
                             </button>
@@ -160,7 +172,11 @@ const Navigation = () => {
 
               {/* Mobile menu button */}
               <div className="flex items-center sm:hidden">
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
+                <Disclosure.Button 
+                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+                  aria-label="Toggle navigation menu"
+                  aria-expanded={open}
+                >
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -173,7 +189,7 @@ const Navigation = () => {
           </div>
 
           {/* Mobile menu */}
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="sm:hidden" role="menu" aria-label="Mobile navigation">
             <div className="pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
                 <Disclosure.Button
