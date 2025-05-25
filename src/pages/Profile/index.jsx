@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import useApi from '../../hooks/useApi';
 import { bookingService, profileService } from '../../API';
 import Button from '../../components/common/Button';
@@ -29,7 +29,7 @@ const Profile = () => {
   const [cancellingBooking, setCancellingBooking] = useState(false);
   const [activeTab, setActiveTab] = useState('venues');
 
-  const fetchUserData = async () => {
+  const fetchUserData = React.useCallback(async () => {
     try {
       // Get venues with bookings and customer info
       const venuesResponse = await profileService.getVenues(user.name);
@@ -70,13 +70,13 @@ const Profile = () => {
     } finally {
       setLoadingData(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (user?.name) {
       fetchUserData();
     }
-  }, [user?.name]);
+  }, [user?.name, fetchUserData]);
 
   const handleCancelBooking = async () => {
     if (!selectedBooking) return;
@@ -131,7 +131,7 @@ const Profile = () => {
   const tabs = [
     { id: 'venues', label: 'My Venues' },
     { id: 'bookings', label: 'My Bookings' },
-    { id: 'venueBookings', label: 'Upcoming Bookings on My Venues' },
+    { id: 'venueBookings', label: 'Venue Reservations' },
   ];
 
   return (
@@ -167,8 +167,8 @@ const Profile = () => {
             </button>
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{user.name}</h1>
-            <p className="text-gray-600">{user.email}</p>
+            <h1 className="text-3xl font-bold text-text">{user.name}</h1>
+            <p className="text-secondary">{user.email}</p>
             <p className="text-sm font-medium mt-1">
               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full ${
                 user.venueManager 
@@ -185,9 +185,9 @@ const Profile = () => {
       <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
       {activeTab === 'venues' && user.venueManager && (
-        <div className="mb-8">
+        <div className="mt-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">My Venues</h2>
+            <h2 className="text-xl font-semibold text-text">My Venues</h2>
             <Button onClick={() => navigate('/venues/create')}>
               Create New Venue
             </Button>
@@ -218,8 +218,8 @@ const Profile = () => {
       )}
 
       {activeTab === 'bookings' && (
-        <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">My Bookings</h2>
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-text mb-4">My Bookings</h2>
           {bookings.length === 0 ? (
             <p className="text-gray-500">You don't have any bookings yet.</p>
           ) : (
@@ -255,7 +255,7 @@ const Profile = () => {
 
       {activeTab === 'venueBookings' && user.venueManager && (
         <div className="mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Upcoming Bookings on My Venues</h2>
+          <h2 className="text-xl font-semibold text-text mb-4">Upcoming Bookings on My Venues</h2>
           {venueBookings.length === 0 ? (
             <p className="text-gray-500">No upcoming bookings on your venues.</p>
           ) : (

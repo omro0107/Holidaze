@@ -50,7 +50,7 @@ const StarRating = ({
         <StarComponent
           className={`
             ${starSize}
-            ${isFilledStar || isHalfStar ? 'text-yellow-400' : 'text-gray-300'}
+            ${isFilledStar || isHalfStar ? 'text-primary-400' : 'text-primary-300'}
           `}
         />
       </button>

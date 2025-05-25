@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import placeholderAvatar from '../../assets/placeholder-profile.png';
+const placeholderAvatar = '/images/placeholder-profile.png';
 
 const Avatar = ({
   src,

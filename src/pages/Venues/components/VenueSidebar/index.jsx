@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Calendar from '../../../../components/common/Calendar';
 import Button from '../../../../components/common/Button';
 import { parseISO, isWithinInterval, differenceInDays } from 'date-fns';
-import { useAuth } from '../../../../context/AuthContext';
+import { useAuth } from '../../../../hooks/useAuth';
 import { bookingService } from '../../../../API';
 
 const VenueSidebar = ({ 
@@ -110,13 +110,13 @@ const VenueSidebar = ({
     <div className="bg-white p-6 rounded-lg shadow-lg sticky top-8">
       {/* Price */}
       <div className="mb-6">
-        <p className="text-3xl font-bold text-gray-900">${price}</p>
-        <p className="text-gray-500">per night</p>
+        <p className="text-3xl font-bold text-primary-900">${price}</p>
+        <p className="text-primary-500">per night</p>
       </div>
 
       {/* Calendar */}
       <div className="mt-6 border-t pt-6">
-        <h3 className="text-lg font-semibold mb-4">Check Availability</h3>
+        <h3 className="text-lg font-normal mb-4">Check Availability and Book Your Stay</h3>
         
         <Calendar
           mode="range"

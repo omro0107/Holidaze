@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { FaUmbrellaBeach } from 'react-icons/fa';
-import { useAuth } from '../../../context/AuthContext';
+import { useAuth } from '../../../hooks/useAuth';
 import Avatar from '../../Avatar';
 import Button from '../../common/Button';
 

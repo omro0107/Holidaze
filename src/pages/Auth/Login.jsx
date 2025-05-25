@@ -2,13 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import useFormValidation from '../../hooks/useFormValidation';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import Header from '../../components/Header/Navigation';
 import Footer from '../../components/Footer';
-import sunsetImage from '../../assets/sunset.jpg';
 
 const Login = () => {
   const { login } = useAuth();
@@ -41,26 +40,46 @@ const Login = () => {
       <Header />
       <div className="flex-grow flex flex-col">
         <main className="flex flex-1">
-          {/* Left side - Image */}
-          <div className="hidden lg:flex lg:w-1/2 p-12">
-            <div className="relative w-full rounded-lg overflow-hidden">
+          {/* Left side - Images */}
+          <div className="hidden lg:flex lg:w-2/5 pl-4 pr-12 py-8 flex-col">
+            {/* Top image (floating) */}
+            <div className="relative w-full h-1/2 mb-4 rounded-lg overflow-hidden">
               <img
-                src={sunsetImage}
-                alt="Beautiful sunset"
-                className="w-full h-full object-contain"
+                src="/images/floating.jpg"
+                alt="Floating venue"
+                className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+              <div className="absolute inset-0"></div>
+            </div>
+            {/* Bottom row with two images */}
+            <div className="flex gap-4 h-1/2">
+              <div className="relative w-1/2 rounded-lg overflow-hidden">
+                <img
+                  src="/images/sunset.jpg"
+                  alt="Beautiful sunset"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0"></div>
+              </div>
+              <div className="relative w-1/2 rounded-lg overflow-hidden">
+                <img
+                  src="/images/bathroom.jpg"
+                  alt="Luxurious bathroom"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0"></div>
+              </div>
             </div>
           </div>
 
           {/* Right side - Login Form */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="w-full lg:w-3/5 flex items-center justify-center px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full">
               <div className="mb-10">
-                <h2 className="text-center text-3xl font-heading font-bold text-gray-900 mb-3">
+                <h2 className="text-center text-3xl font-heading font-bold text-text mb-3">
                   Hello Again, Explorer
                 </h2>
-                <p className="text-center text-sm text-gray-600">
+                <p className="text-center text-sm text-secondary-600">
                   First time here?{' '}
                   <Link
                     to="/register"

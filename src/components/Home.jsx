@@ -4,7 +4,7 @@ import { MagnifyingGlassIcon, MapPinIcon, CalendarIcon } from '@heroicons/react/
 import Button from './common/Button';
 import Card from './common/Card';
 import { venueService } from '../API';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import HeroSection from './HeroSection';
 
 const Home = () => {

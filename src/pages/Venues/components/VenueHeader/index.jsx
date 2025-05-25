@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MapPinIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../../context/AuthContext';
+import { useAuth } from '../../../../hooks/useAuth';
 import StarRating from '../../../../components/StarRating';
 import Button from '../../../../components/common/Button';
 import Modal from '../../../../components/common/Modal';

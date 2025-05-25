@@ -1,19 +1,10 @@
-import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { AuthContext } from './AuthContext';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { API_AUTH_URL } from '../API/config';
 import { LOCAL_STORAGE_KEYS } from '../utils/constants';
 import { authService, profileService } from '../API';
-
-const AuthContext = createContext(null);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -21,51 +12,6 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const initializeAuthCalled = useRef(false);
-
-  // Initialize auth state
-  useEffect(() => {
-    const initializeAuth = async () => {
-      if (initializeAuthCalled.current) return;
-      initializeAuthCalled.current = true;
-
-      const storedToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-      const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.USER);
-      if (storedToken) {
-        if (storedUser) {
-          try {
-            setUser(JSON.parse(storedUser));
-          } catch {
-            localStorage.removeItem(LOCAL_STORAGE_KEYS.USER);
-          }
-        }
-        try {
-          // Get the stored user data to get the username
-          const storedUserData = JSON.parse(storedUser);
-          
-          // Fetch complete profile data
-          const profileData = await profileService.getProfile(storedUserData.name);
-          if (profileData) {
-            setUser(profileData);
-            localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(profileData));
-          } else if (!storedUser) {
-            // If API returns generic profile and no stored user, logout
-            logout();
-          }
-        } catch (error) {
-          console.error('Failed to fetch user profile:', error);
-          if (error.message.includes('Too many requests')) {
-            // Don't logout on rate limit, just set loading to false
-            setIsLoading(false);
-            return;
-          }
-          logout();
-        }
-      }
-      setIsLoading(false);
-    };
-
-    initializeAuth();
-  }, []); // Remove api from dependencies
 
   // Login handler
   const login = useCallback(async (email, password) => {
@@ -132,6 +78,51 @@ export const AuthProvider = ({ children }) => {
     navigate('/login');
   }, [navigate]);
 
+    // Initialize auth state
+  useEffect(() => {
+    const initializeAuth = async () => {
+      if (initializeAuthCalled.current) return;
+      initializeAuthCalled.current = true;
+
+      const storedToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+      const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.USER);
+      if (storedToken) {
+        if (storedUser) {
+          try {
+            setUser(JSON.parse(storedUser));
+          } catch {
+            localStorage.removeItem(LOCAL_STORAGE_KEYS.USER);
+          }
+        }
+        try {
+          // Get the stored user data to get the username
+          const storedUserData = JSON.parse(storedUser);
+          
+          // Fetch complete profile data
+          const profileData = await profileService.getProfile(storedUserData.name);
+          if (profileData) {
+            setUser(profileData);
+            localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(profileData));
+          } else if (!storedUser) {
+            // If API returns generic profile and no stored user, logout
+            logout();
+          }
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
+          if (error.message.includes('Too many requests')) {
+            // Don't logout on rate limit, just set loading to false
+            setIsLoading(false);
+            return;
+          }
+          logout();
+        }
+      }
+      setIsLoading(false);
+    };
+
+    initializeAuth();
+  }, [logout]); // Remove api from dependencies
+
   // Update profile handler
   const updateProfile = useCallback(async (profileData) => {
     try {
@@ -184,5 +175,3 @@ export const AuthProvider = ({ children }) => {
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
-export default AuthProvider;

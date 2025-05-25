@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -165,7 +165,7 @@ const CreateVenue = () => {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Create New Venue</h1>
+      <h1 className="text-3xl font-normal text-text mb-8">Create New Venue</h1>
       
       <form 
         onSubmit={handleSubmit(
@@ -182,7 +182,7 @@ const CreateVenue = () => {
       >
         {/* Basic Information */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Basic Information</h2>
+          <h2 className="text-xl font-semibold text-text mb-4">Basic Information</h2>
           <div className="space-y-4">
             <Input
               id="venue-name"
@@ -192,7 +192,7 @@ const CreateVenue = () => {
             />
             
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-text">
                 Description
               </label>
               <textarea
@@ -228,7 +228,7 @@ const CreateVenue = () => {
         {/* Media */}
         <div className="bg-white shadow rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Images</h2>
+            <h2 className="text-xl font-semibold text-text">Images</h2>
             <Button
               type="button"
               variant="secondary"
@@ -263,7 +263,7 @@ const CreateVenue = () => {
 
         {/* Location */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Location</h2>
+          <h2 className="text-xl font-semibold text-text mb-4">Location</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               id="venue-address"
@@ -294,7 +294,7 @@ const CreateVenue = () => {
 
         {/* Amenities */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Amenities</h2>
+          <h2 className="text-xl font-semibold text-text mb-4">Amenities</h2>
           <div className="grid grid-cols-2 gap-4">
             <label className="flex items-center space-x-2">
               <input

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import useApi from '../../hooks/useApi';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import Button from '../../components/common/Button';
 import Loading from '../../components/common/Loading';
 import Modal from '../../components/common/Modal';

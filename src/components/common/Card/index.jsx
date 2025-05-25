@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
-import { MapPinIcon, UserIcon } from '@heroicons/react/24/outline';
-import { useAuth } from '../../../context/AuthContext';
+import { MapPinIcon} from '@heroicons/react/24/outline';
+import { useAuth } from '../../../hooks/useAuth';
 import { venueService } from '../../../API';
 import StarRating from '../../StarRating';
 import Button from '../Button';
@@ -16,7 +16,6 @@ const Card = ({
   price,
   rating,
   location,
-  maxGuests,
   meta,
   actions,
   href,
@@ -36,7 +35,7 @@ const Card = ({
       const response = await venueService.delete(id);
       if (response) {
         alert('Venue deleted successfully');
-      window.location.href = '/profile';
+        window.location.href = '/profile';
       }
     } catch (error) {
       console.error('Failed to delete venue:', error);
@@ -46,6 +45,7 @@ const Card = ({
       setShowDeleteModal(false);
     }
   };
+
   const CardWrapper = ({ children }) => {
     if (href) {
       return (
@@ -75,35 +75,25 @@ const Card = ({
   };
 
   return (
-<CardWrapper>
+    <CardWrapper>
       {/* Image */}
       <div className="relative aspect-w-16 aspect-h-9">
         <img
-          src={media?.[0]?.url || '/src/assets/placeholder.png'}
+          src={media?.[0]?.url || '/images/placeholder-venue.png'}
           alt={media?.[0]?.alt || title}
           className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-200"
         />
-        <div className="absolute inset-0 flex justify-end p-2">
-          {price && (
-            <div className="bg-white rounded-sm px-1.5">
-              <span className="font-semibold text-primary-600 text-sm whitespace-nowrap">
-                ${price}
-                <span className="text-xs text-gray-600">/night</span>
-              </span>
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Content */}
       <div className="p-4">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-600">
+            <h3 className="text-lg font-semibold text-text group-hover:text-primary-600">
               {title}
             </h3>
             {location && (
-              <p className="mt-1 flex items-center text-sm text-gray-500">
+              <p className="mt-1 flex items-center text-sm text-secondary-500">
                 <MapPinIcon className="h-4 w-4 mr-1 flex-shrink-0" />
                 {location}
               </p>
@@ -115,17 +105,19 @@ const Card = ({
         </div>
 
         {description && (
-          <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+          <p className="mt-2 text-sm text-secondary-600 line-clamp-2">
             {description}
           </p>
         )}
 
         {/* Meta Information */}
         <div className="mt-4 flex items-center space-x-4">
-          {maxGuests && (
-            <div className="flex items-center text-sm text-gray-500">
-              <UserIcon className="h-4 w-4 mr-1" />
-              {maxGuests} guests
+          {price && (
+            <div className="flex items-center text-sm text-secondary-500">
+              <span className="font-semibold text-primary-600 whitespace-nowrap">
+                ${price}
+                <span className="text-xs text-secondary-600">/night</span>
+              </span>
             </div>
           )}
           {meta}
@@ -203,7 +195,6 @@ Card.propTypes = {
   price: PropTypes.number,
   rating: PropTypes.number,
   location: PropTypes.string,
-  maxGuests: PropTypes.number,
   meta: PropTypes.node,
   actions: PropTypes.node,
   href: PropTypes.string,

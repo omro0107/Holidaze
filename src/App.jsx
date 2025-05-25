@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route, Outlet } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthProvider';
 import { ROUTES } from './utils/constants';
 
 // Layout

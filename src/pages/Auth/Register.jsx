@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import useFormValidation from '../../hooks/useFormValidation';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
@@ -55,15 +55,15 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F2EADF]">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
       <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full">
           <div className="mb-10">
-            <h2 className="text-center text-3xl font-heading font-bold text-gray-900 mb-3">
+            <h2 className="text-center text-3xl font-heading font-bold text-text mb-3">
               New Here? Welcome Aboard
             </h2>
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-secondary-600">
               Been here before?{' '}
               <Link
                 to="/login"
@@ -137,11 +137,11 @@ const Register = () => {
                 <div className="ml-3">
                   <label
                     htmlFor="venueManager"
-                    className="text-sm font-medium text-gray-900 cursor-pointer select-none"
+                    className="text-sm font-medium text-text cursor-pointer select-none"
                   >
                     Register as a venue manager
                   </label>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs text-secondary-600 mt-1">
                     Get access to create and manage venue listings
                   </p>
                 </div>
@@ -167,7 +167,7 @@ const Register = () => {
             </div>
           </form>
 
-          <div className="mt-8 text-xs text-center text-gray-600">
+          <div className="mt-8 text-xs text-center text-secondary-600">
             By creating an account, you agree to our{' '}
             <a
               href="#"

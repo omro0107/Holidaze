@@ -46,11 +46,11 @@ const Contact = () => {
 
       {/* Content */}
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-heading font-bold text-[#70533A] text-center mb-6">
+        <h1 className="text-4xl font-heading font-bold text-text text-center mb-8">
           We'd Love to Hear From You
         </h1>
 
-        <div className="prose prose-lg mx-auto mb-12 text-[#70533A]">
+        <div className="prose prose-lg mx-auto mb-12 text-text">
           <p>
             Whether you have a question, need help planning your next getaway, or simply want to share your thoughts — we're here for you.
           </p>

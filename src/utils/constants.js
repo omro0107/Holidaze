@@ -69,5 +69,5 @@ export const DATE_FORMAT = {
   API: 'yyyy-MM-dd',
 };
 
-export const PLACEHOLDER_AVATAR = '/placeholder-avatar.png';
-export const PLACEHOLDER_IMAGE = '/placeholder-image.png';
+export const PLACEHOLDER_AVATAR = '/placeholder-profile.png';
+export const PLACEHOLDER_IMAGE = '/placeholder-venue.png';

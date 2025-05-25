@@ -25,12 +25,12 @@ export const authService = {
 // Venue services
 export const venueService = {
   getAll: async (params) => {
-    const response = await api.get(API_VENUES_URL, { params });
+    const response = await api.get(`${API_VENUES_URL}?_owner=true`, { params });
     return response;
   },
 
   getById: async (id) => {
-    const response = await api.get(`${API_VENUES_URL}/${id}`);
+    const response = await api.get(`${API_VENUES_URL}/${id}?_owner=true`);
     return response;
   },
 

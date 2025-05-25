@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { UserGroupIcon, MapPinIcon } from '@heroicons/react/24/outline';
-import placeholderProfile from '../../../../assets/placeholder-profile.png';
+const placeholderProfile = '/images/placeholder-profile.png';
 
 const VenueDescription = ({ 
   description, 
