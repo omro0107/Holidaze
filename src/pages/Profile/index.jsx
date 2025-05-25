@@ -35,7 +35,12 @@ const Profile = () => {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [cancellingBooking, setCancellingBooking] = useState(false);
-  const [activeTab, setActiveTab] = useState('venues');
+  const [activeTab, setActiveTab] = useState(user.venueManager ? 'venues' : 'bookings');
+
+  // Update active tab when user role changes
+  useEffect(() => {
+    setActiveTab(user.venueManager ? 'venues' : 'bookings');
+  }, [user.venueManager]);
 
   /**
    * Fetches profile-related data including venues, bookings, and venue bookings.
@@ -44,39 +49,44 @@ const Profile = () => {
    */
   const fetchUserData = React.useCallback(async () => {
     try {
-      // Get venues with bookings and customer info
-      const venuesResponse = await profileService.getVenues(user.name);
+      // Always fetch user's bookings
       const bookingsResponse = await profileService.getProfile(user.name);
-
-      setVenues(venuesResponse || []);
       setBookings(bookingsResponse?.bookings || []);
 
-      // Get all bookings from venues and include customer info
-      const allVenueBookings = venuesResponse?.reduce((acc, venue) => {
-        const bookingsWithVenue = (venue.bookings || []).map(booking => ({
-          ...booking,
-          venue: {
-            ...venue,
-            bookings: undefined // Remove nested bookings to avoid circular reference
-          }
-        }));
-        return [...acc, ...bookingsWithVenue];
-      }, []);
+      // Only fetch venues and venue bookings if user is a venue manager
+      if (user.venueManager) {
+        const venuesResponse = await profileService.getVenues(user.name);
+        setVenues(venuesResponse || []);
 
-      // Sort by date, keeping only upcoming bookings
-      const now = new Date();
+        // Get all bookings from venues and include customer info
+        const allVenueBookings = venuesResponse?.reduce((acc, venue) => {
+          const bookingsWithVenue = (venue.bookings || []).map(booking => ({
+            ...booking,
+            venue: {
+              ...venue,
+              bookings: undefined // Remove nested bookings to avoid circular reference
+            }
+          }));
+          return [...acc, ...bookingsWithVenue];
+        }, []) || [];
 
-      const upcomingBookings = (allVenueBookings || [])
-        .filter(booking => {
-          const bookingDate = new Date(booking.dateFrom);
-          // Reset time part for date comparison
-          const bookingDateOnly = new Date(bookingDate.getFullYear(), bookingDate.getMonth(), bookingDate.getDate());
-          const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-          return bookingDateOnly >= nowDateOnly;
-        })
-        .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom));
+        // Sort by date, keeping only upcoming bookings
+        const now = new Date();
+        const upcomingBookings = allVenueBookings
+          .filter(booking => {
+            const bookingDate = new Date(booking.dateFrom);
+            // Reset time part for date comparison
+            const bookingDateOnly = new Date(bookingDate.getFullYear(), bookingDate.getMonth(), bookingDate.getDate());
+            const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            return bookingDateOnly >= nowDateOnly;
+          })
+          .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom));
 
-      setVenueBookings(upcomingBookings || []);
+        setVenueBookings(upcomingBookings);
+      } else {
+        setVenues([]);
+        setVenueBookings([]);
+      }
     } catch (error) {
       console.error('Failed to fetch user data:', error);
       setError(error.message);
@@ -150,11 +160,15 @@ const Profile = () => {
     );
   }
 
-  const tabs = [
-    { id: 'venues', label: 'My Venues' },
-    { id: 'bookings', label: 'My Bookings' },
-    { id: 'venueBookings', label: 'Reservations' },
-  ];
+  const tabs = user.venueManager 
+    ? [
+        { id: 'venues', label: 'My Venues' },
+        { id: 'bookings', label: 'My Bookings' },
+        { id: 'venueBookings', label: 'Reservations' },
+      ]
+    : [
+        { id: 'bookings', label: 'My Bookings' },
+      ];
 
   return (
     <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8">
@@ -373,6 +387,7 @@ const Profile = () => {
             }}
             placeholder="Enter image URL"
             error={error}
+            autoComplete="url"
           />
           
           {/* Preview */}

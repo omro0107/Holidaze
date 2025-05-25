@@ -105,6 +105,7 @@ const VenueForm = ({
             label="Venue Name"
             {...register('name')}
             error={errors.name?.message}
+            autoComplete="organization"
           />
           
           <div>
@@ -112,6 +113,7 @@ const VenueForm = ({
               Description
             </label>
             <textarea
+              id="venue-description"
               {...register('description')}
               rows={4}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
@@ -161,6 +163,7 @@ const VenueForm = ({
                 id={`media-${index}`}
                 placeholder="Image URL"
                 {...register(`media.${index}`)}
+                autoComplete="url"
                 error={errors.media?.[index]?.message}
               />
               {mediaUrls.length > 1 && (
@@ -186,24 +189,28 @@ const VenueForm = ({
             label="Address"
             {...register('location.address')}
             error={errors.location?.address?.message}
+            autoComplete="street-address"
           />
           <Input
             id="venue-city"
             label="City"
             {...register('location.city')}
             error={errors.location?.city?.message}
+            autoComplete="address-level2"
           />
           <Input
             id="venue-zip"
             label="ZIP Code"
             {...register('location.zip')}
             error={errors.location?.zip?.message}
+            autoComplete="postal-code"
           />
           <Input
             id="venue-country"
             label="Country"
             {...register('location.country')}
             error={errors.location?.country?.message}
+            autoComplete="country-name"
           />
         </div>
       </div>

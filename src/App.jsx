@@ -67,14 +67,14 @@ const router = createBrowserRouter(
 
       {/* Main Layout Routes */}
       <Route element={<Layout />}>
-        <Route path={ROUTES.HOME} element={<Home />} />
+      <Route path={ROUTES.HOME} element={<Home />} />
         
-            <Route path={ROUTES.VENUES} element={<VenueList />} />
-            <Route path={ROUTES.VENUE_DETAILS} element={<Venue />} />
-            <Route path={ROUTES.CONTACT} element={<Contact />} />
-            <Route path={ROUTES.ABOUT} element={<About />} />
-            <Route path={ROUTES.TERMS} element={<Terms />} />
-            <Route path={ROUTES.PRIVACY} element={<Privacy />} />
+        <Route path={ROUTES.VENUES} element={<VenueList />} />
+        <Route path={ROUTES.VENUE_DETAILS} element={<Venue />} />
+        <Route path={ROUTES.CONTACT} element={<Contact />} />
+        <Route path={ROUTES.ABOUT} element={<About />} />
+        <Route path={ROUTES.TERMS} element={<Terms />} />
+        <Route path={ROUTES.PRIVACY} element={<Privacy />} />
         
         {/* Protected Routes */}
         <Route

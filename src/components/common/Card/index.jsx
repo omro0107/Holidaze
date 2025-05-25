@@ -118,7 +118,7 @@ const Card = ({
       {/* Image */}
       <div className="relative aspect-w-16 aspect-h-9" role="img" aria-label={media?.[0]?.alt || `Image of ${title}`}>
           <img
-            src={media?.[0]?.url || '/images/placeholder-venue.png'}
+            src={media?.[0]?.url || '/images/placeholder-venue.jpg'}
             alt={media?.[0]?.alt || `Image of ${title}`}
             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-200"
           />

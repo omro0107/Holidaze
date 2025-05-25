@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { venueService } from '../../API';
+import useDynamicPageTitle from '../../hooks/useDynamicPageTitle';
 import Loading from '../../components/common/Loading';
 import ImageGallery from './components/ImageGallery';
 import VenueHeader from './components/VenueHeader';
@@ -22,6 +23,7 @@ const Venue = () => {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
   const [loading, setLoading] = useState(true);
+  useDynamicPageTitle('Venue', { dynamicPart: venue?.name, isLoading: loading });
   const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedDates, setSelectedDates] = useState({ from: null, to: null });

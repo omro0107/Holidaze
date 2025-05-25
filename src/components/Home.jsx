@@ -6,6 +6,7 @@ import Card from './common/Card';
 import { venueService } from '../API';
 import { useAuth } from '../hooks/useAuth';
 import HeroSection from './HeroSection';
+import useDynamicPageTitle from '../hooks/useDynamicPageTitle';
 
 /**
  * Home component displays the main landing page including
@@ -34,7 +35,10 @@ const Home = () => {
 
   const { user } = useAuth();
 
-    /**
+  // Set page title
+  useDynamicPageTitle('Home', { isLoading: loading });
+
+  /**
    * Fetch top venues from the API, filter to only those
    * with 5-star rating, shuffle randomly, and take the first 3.
    * This runs once on component mount.

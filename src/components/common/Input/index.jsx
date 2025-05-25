@@ -33,6 +33,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
  * @param {boolean} [props.required=false] - Marks the field as required (sets aria-required)
  * @param {string} [props.placeholder] - Custom placeholder (defaults to `label` if not set)
  * @param {string} props.id - ID of the input, required for aria-describedby and accessibility
+ * @param {string} [props.autoComplete] - HTML autocomplete attribute value (e.g., 'name', 'email', 'off')
  * @param {Object} ref - Forwarded ref for the input element
  */
 const Input = forwardRef(({
@@ -47,6 +48,7 @@ const Input = forwardRef(({
   containerClassName = '',
   required = false,
   placeholder,
+  autoComplete,
   ...props
 }, ref) => {
   const inputClasses = `
@@ -73,6 +75,14 @@ const Input = forwardRef(({
 
   return (
     <div className={containerClasses}>
+      {label && (
+        <label
+          htmlFor={props.id}
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          {label}
+        </label>
+      )}
       <div className="relative">
         {leftIcon && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -85,12 +95,12 @@ const Input = forwardRef(({
           type={type}
           className={inputClasses}
           aria-invalid={error ? 'true' : 'false'}
-          aria-label={label}
           placeholder={inputPlaceholder}
           aria-required={required}
           aria-describedby={
             error ? `${props.id}-error` : helper ? `${props.id}-helper` : undefined
           }
+          autoComplete={autoComplete}
           {...props}
         />
 
@@ -139,6 +149,7 @@ Input.propTypes = {
   required: PropTypes.bool,
   id: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
+  autoComplete: PropTypes.string,
 };
 
 export default Input;

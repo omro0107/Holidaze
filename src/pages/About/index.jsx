@@ -1,4 +1,5 @@
 import React from 'react';
+import useDynamicPageTitle from '../../hooks/useDynamicPageTitle';
 
 /**
  * About page component for Holidaze.
@@ -16,6 +17,8 @@ import React from 'react';
  * @returns {JSX.Element} The About page content
  */
 const About = () => {
+  useDynamicPageTitle('About');
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Mission Section */}

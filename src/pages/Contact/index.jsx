@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
+import useDynamicPageTitle from '../../hooks/useDynamicPageTitle';
 
 /**
  * Validation schema for contact form using Yup.
@@ -29,6 +30,8 @@ const schema = yup.object().shape({
  */
 const Contact = () => {
   const [showModal, setShowModal] = useState(false);
+  useDynamicPageTitle('Contact');
+
   const {
     register,
     handleSubmit,
@@ -89,13 +92,19 @@ const Contact = () => {
         </div>
 
         {/* Contact Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form 
+          onSubmit={handleSubmit(onSubmit)} 
+          className="space-y-6"
+          role="form"
+          aria-label="Contact form"
+        >
           <Input
             id="contact-name"
             label="Name"
             {...register('name')}
             error={errors.name?.message}
             fullWidth
+            autoComplete="name"
           />
 
           <Input
@@ -105,15 +114,20 @@ const Contact = () => {
             {...register('email')}
             error={errors.email?.message}
             fullWidth
+            autoComplete="email"
           />
 
           <div>
-            <label className="block text-sm font-medium text-[#70533A] mb-1">
+            <label 
+              htmlFor="contact-message"
+              className="block text-sm font-medium text-[#70533A] mb-1"
+            >
               Message
             </label>
             <textarea
               id="contact-message"
               {...register('message')}
+              autoComplete="off"
               rows={6}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
             />

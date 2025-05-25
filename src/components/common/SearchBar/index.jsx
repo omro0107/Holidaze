@@ -88,6 +88,7 @@ const SearchBar = ({
           placeholder={placeholder}
           className="w-full pr-10 text-sm sm:text-base h-10 sm:h-auto"
           aria-label={placeholder}
+          autoComplete="off"
           leftIcon={
             <MagnifyingGlassIcon 
               className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400"
