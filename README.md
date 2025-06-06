@@ -1,6 +1,6 @@
 # Holidaze - Venue Booking Platform
 
-![Holidaze Venue Booking Platform](/public/images/readme)
+![Holidaze Venue Booking Platform](/public/images/readme.png)
 
 A modern, full-featured venue booking application built with React and Vite. Holidaze allows users to discover, book, and manage accommodation venues with an intuitive interface and comprehensive booking system.
 
